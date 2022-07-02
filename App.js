@@ -3,7 +3,8 @@
 import React from "react";
 import useFetch from "./src/hooks/useFetch"
 import Search from "./src/component/Search";
-import { View, TextInput } from "react-native";
+import {Form, Card, TextInput} from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function App() {
   const { data, setData } = useFetch();
@@ -30,16 +31,26 @@ export default function App() {
           "genres": [],
           "tracks": [],
   }
+
+  const handleSubmit = (e) => {
+    if (e.code === 'Enter') e.preventDefault();
+  };
+  const checkKeyDown = (e) => {
+    if (e.code === 'Enter') e.preventDefault();
+  };
   return (
-    <View style={{inline: 1, alignItems: "left", justifyContent: "left", padding: '5%'}}>
-      <TextInput
-        type="text"
-        placeholder="Search Spotify"
-        value={data.slug}
-        onChange={(e) => setData({ ...data, slug: e.target.value })}
-      />
+    <Card style={{inline: 1, alignItems: "left", justifyContent: "left", padding: '5%'}}>
+      <Form onSubmit={(e)=> handleSubmit(e)}  onKeyDown={(e) => checkKeyDown(e)} >
+        <Form.Control
+          type="text"
+          placeholder="Search Spotify"
+          value={data.slug}
+          onChange={(e) => setData({ ...data, slug: e.target.value })}
+        />
+      </Form>
+      
       {Object.keys(data.results).length > 0 ? <Search searchQuery={data.results.data} /> : null } 
       {/* <Search searchQuery={dummyData} />} */}
-    </View>
+    </Card>
   );
 }

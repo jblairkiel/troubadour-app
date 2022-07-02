@@ -1,26 +1,49 @@
 // @src/components/SearchQuery.jsx
 
 import React from "react";
-import { View, StyleSheet, Image, SafeAreaView, SectionList, Text } from "react-native";
-import { StatusBar } from 'expo-status-bar';
-import BootstrapStyleSheet from 'react-native-bootstrap-styles';
-
+//import { View, StyleSheet, Image, SafeAreaView, SectionList, Text } from "react-native";
+import {Card, ListGroup} from 'react-bootstrap';
+import Image from 'react-bootstrap/Image';
+import Figure from 'react-bootstrap/Figure';
 
 export default function SearchQuery({ searchQuery}) {
 
-	const bootstrapStyleSheet = new BootstrapStyleSheet();
-	const { s, c } = bootstrapStyleSheet;
-	const styles = StyleSheet.create({
-		tinyLogo: {
-			width: '50px',
-			height: '50px',
-			display: "inline-block"
-		},
-	  });
+	// const styles = StyleSheet.create({
+	// 	tinyLogo: {
+	// 		width: '50px',
+	// 		height: '50px',
+	// 		display: "inline-block"
+	// 	},
+	//   });
 
 
 	return (
-		<View>			
+		<Card>	
+			<h2>Albums</h2>
+			<ListGroup>
+				{
+					searchQuery.albums.map(function(d, idx){
+						return (
+						<ListGroup.Item key={idx}>
+							<Card>
+								{d.images.length > 0 ? 
+								<Figure>
+									<Figure.Image variant='top' width={50} height={50} src={d.images[0].url} />
+								</Figure>  : null
+								}
+								<Card.Title>{d.name}</Card.Title>
+							</Card>
+						</ListGroup.Item>
+						)
+					  })
+					
+				}
+			</ListGroup>
+
+			{/* 
+			Object.entries().map(([key, value]) => (
+						<ListGroup.Item key={key}>{value.name}</ListGroup.Item>
+					));	
 			<SectionList 
 			sections={[
 				{title: 'Albums', data: searchQuery.albums},
@@ -44,7 +67,7 @@ export default function SearchQuery({ searchQuery}) {
 				<Text style={[s.textPrimary]}>{section.title}</Text>
 			  )}
 			keyExtractor={(item, index) => item.spotify_id}
-			/>
-		</View>
+			/> */}
+		</Card>
 	)
 }
