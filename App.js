@@ -6,8 +6,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import useFetch from "./src/hooks/useFetch"
 import Search from "./src/component/Search";
+import {ScrollView, View} from 'react-native';
 import TroubadourNavbar from './src/component/TroubadourNavbar'
-import {Form, Card, TextInput} from 'react-bootstrap';
+import {Form} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
@@ -23,8 +24,8 @@ function SearchScreen() {
   	};
 
 	return (
-		<div className="App">
-			<div style={{inline: 1, alignItems: "left", justifyContent: "left", padding: '1%'}}>
+		<View style={{flex:1,  alignItems: "left", justifyContent: "left", padding: '1%'}}>
+
 			<Form onSubmit={(e)=> handleSubmit(e)}  onKeyDown={(e) => checkKeyDown(e)} >
 				<Form.Control
 				type="text"
@@ -35,13 +36,11 @@ function SearchScreen() {
 			</Form>
 			
 			{Object.keys(data.results).length > 0 ?
-			<div > 
+			<ScrollView contentContainerStyle={{ flexGrow: 1 }}> 
 				<Search searchQuery={data.results.data} /> 
-			</div>
+			</ScrollView>
 			: null } 
-			{/* <Search searchQuery={dummyData} />} */}
-			</div>
-		</div>
+		</View>
 	);
 }
 

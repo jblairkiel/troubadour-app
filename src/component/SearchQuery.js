@@ -1,10 +1,8 @@
 // @src/components/SearchQuery.jsx
 
 import React from "react";
-//import { View, StyleSheet, Image, SafeAreaView, SectionList, Text } from "react-native";
-import {Card, ListGroup} from 'react-bootstrap';
-import Image from 'react-bootstrap/Image';
-import Figure from 'react-bootstrap/Figure';
+import { ScrollView } from "react-native";
+import {Card} from 'react-bootstrap';
 import {
     Row,
     Col,
@@ -14,7 +12,7 @@ import {
 export default function SearchQuery({ searchQuery}) {
 
 	let colCount = 5
-	let mdVar = 2
+	let mdVar = 1
 
 	//Index is needed to keep track of the current element that we are one.
 	let index = 0
@@ -24,10 +22,10 @@ export default function SearchQuery({ searchQuery}) {
 		return (
 			<Card key={props.id}>
 				{props.src.length > 0 ? 
-				<Card.Img variant='top' style={{ width: '11rem' }} src={props.src[0].url} />  : null
+				<Card.Img variant='top' src={props.src[0].url} />  : null
 				}
 				<Card.Body>
-					<Card.Title>{props.title}</Card.Title>
+					<a>{props.title}</a>
 				</Card.Body>
 			</Card>
 		)
@@ -47,7 +45,7 @@ const GridSystem = ({ colCount, children, searchTitle }) => {
 	//This is the driver function for building the grid system.
 	const buildGrid = (titleName, titleData, colCount, rowCount) => {
 		let header = (
-			<h2>{titleName}</h2>
+			<h4>{titleName}</h4>
 		)
 		let queryResults = renderRows(titleData, colCount, rowCount)
 
@@ -90,7 +88,7 @@ const GridSystem = ({ colCount, children, searchTitle }) => {
         for(let col = 0; col < colCount; col++) {
             if(index < queryResults.length) {
                 cols.push(
-                    <Col className='Col' key={queryResults[index].spotify_id} sm={mdVar} >
+                    <Col className='Col' key={queryResults[index].spotify_id}  >
 						{queryResults[index]}
                     </Col>
                 )
@@ -118,23 +116,27 @@ const GridSystem = ({ colCount, children, searchTitle }) => {
 
 	return (
 		<div>
-			<GridSystem  style={{ overflowY: true}} colCount={colCount} md={mdVar} searchTitle={'Albums'}>
+			<GridSystem colCount={colCount} md={mdVar} searchTitle={'Top Result'}>
+			{ [searchQuery.top_result].length > 0 
+			? [searchQuery.top_result].map(item => <Item key={item.spotify_id} id={item.spotify_id} title={item.name} src={item.images}/>) 
+			: [<p></p>] }
+			</GridSystem>
+			<GridSystem colCount={colCount} md={mdVar} searchTitle={'Albums'}>
 			{ searchQuery.albums.length > 0 
 			? searchQuery.albums.map(item => <Item key={item.spotify_id} id={item.spotify_id} title={item.name} src={item.images}/>) 
 			: [<p>No albums are found.</p>] }
 			</GridSystem>
-			<GridSystem  style={{ overflowY: true}} colCount={colCount} md={mdVar} searchTitle={'Albums'}>
-
+			<GridSystem   colCount={colCount} md={mdVar} searchTitle={'Artists'}>
 			{ searchQuery.artists.length > 0 
 			? searchQuery.artists.map(item => <Item key={item.spotify_id} id={item.spotify_id} title={item.name} src={item.images} />) 
 			: [<p>No artists are found.</p>] }
 			</GridSystem>
-			<GridSystem  style={{ overflowY: true}} colCount={colCount} md={mdVar} searchTitle={'Albums'}>
+			<GridSystem colCount={colCount} md={mdVar} searchTitle={'Genres'}>
 			{ searchQuery.genres.length > 0 
 			? searchQuery.genres.map(item => <Item key={item.spotify_id} id={item.spotify_id} title={item.name} src={item.images} />) 
 			: [<p>No genres are found.</p>] }
 			</GridSystem>
-			<GridSystem  style={{ overflowY: true}} colCount={colCount} md={mdVar} searchTitle={'Albums'}>
+			<GridSystem colCount={colCount} md={mdVar} searchTitle={'Tracks'}>
 			{ searchQuery.tracks.length > 0 
 			? searchQuery.tracks.map(item => <Item key={item.spotify_id} id={item.spotify_id} title={item.name} src={item.images} />) 
 			: [<p>No tracks are found.</p>] }
