@@ -24,7 +24,7 @@ function SearchScreen() {
 
 	return (
 		<div>
-			<Card style={{inline: 1, alignItems: "left", justifyContent: "left", padding: '5%'}}>
+			<div style={{inline: 1, alignItems: "left", justifyContent: "left", padding: '1%'}}>
 			<Form onSubmit={(e)=> handleSubmit(e)}  onKeyDown={(e) => checkKeyDown(e)} >
 				<Form.Control
 				type="text"
@@ -34,9 +34,13 @@ function SearchScreen() {
 				/>
 			</Form>
 			
-			{Object.keys(data.results).length > 0 ? <Search searchQuery={data.results.data} /> : null } 
+			{Object.keys(data.results).length > 0 ?
+			<div style={{height:'100%', overflowY:"auto"}} > 
+				<Search searchQuery={data.results.data} /> 
+			</div>
+			: null } 
 			{/* <Search searchQuery={dummyData} />} */}
-			</Card>
+			</div>
 		</div>
 	);
 }

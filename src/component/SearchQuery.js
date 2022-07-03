@@ -31,25 +31,18 @@ export default function SearchQuery({ searchQuery}) {
 		return (
 			<Card key={props.id}>
 				{props.src.length > 0 ? 
-				<Card.Img variant='top' style={{ width: '18rem' }} src={props.src[0].url} />  : null
+				<Card.Img variant='top' style={{ width: '11rem' }} src={props.src[0].url} />  : null
 				}
 				<Card.Body>
-					<Card.Title>{props.name}</Card.Title>
+					<Card.Title>{props.title}</Card.Title>
 				</Card.Body>
 			</Card>
 		)
 	}
 	
-	const GridSystem = ({ colCount, children, searchTitle }) => {
-		return (
-			<Container className='Container'>
-				{
-					buildResults(colCount, children, searchTitle)
-				}
-			</Container>
-		);
-	}
+const GridSystem = ({ colCount, children, searchTitle }) => {
 
+	let index = 0
 	const buildResults = (colCount, searchQuery, searchTitle) => {
 		let rowCount = Math.floor(searchQuery.length / colCount) + 1
 		let results = []
@@ -66,22 +59,22 @@ export default function SearchQuery({ searchQuery}) {
 		let queryResults = renderRows(titleData, colCount, rowCount)
 
 		return (
-			<div >
+			<div style={{height: '3200px', overflowY: true}}>
 				{header}
 				{queryResults}
 			</div>
 		)
 	}
+
 	//Returns For example, we can have a row with 2 columns inside it.
 	const renderRows = (searchQuery, colCount, rowCount) => {
 
 		let rows = []
-		let index = 0
 		for(let row = 0; row < rowCount; row++) {
 			let renderResults = renderCols(searchQuery, colCount, rowCount, index)
 
 			rows.push(
-				<Row className='Row' key={index} >
+				<Row className='Row' key={searchQuery[index]+row.toString()} >
 					{
 						renderResults.cols
 					}
@@ -96,7 +89,6 @@ export default function SearchQuery({ searchQuery}) {
 		)
 		return container
 	}
-
 	//Returns an array of columns with the children inside.
 	const renderCols = (queryResults, colCount, rowCount, index) => {
         let cols = []
@@ -117,12 +109,27 @@ export default function SearchQuery({ searchQuery}) {
     }
 
 	return (
+		<Container className='Container'>
+			{
+				buildResults(colCount, children, searchTitle)
+			}
+		</Container>
+	);
+}
 
-		<GridSystem colCount={2} md={mdVar} searchTitle={'Albums'}>
+
+	
+
+
+	
+
+	return (
+
+		<GridSystem colCount={colCount} md={mdVar} searchTitle={'Albums'}>
 		{ searchQuery.albums.length > 0 
 		? searchQuery.albums.map(item => <Item key={item.spotify_id} id={item.spotify_id} title={item.name} src={item.images}/>) 
 		: [<p>No tracks are found.</p>] }
-		/></GridSystem>
+		</GridSystem>
 		/*//<Container>
 			 <GridSystem colCount={2} md={6} searchTitle={'Artists'}>
 			{ searchQuery.artists.length > 0 
