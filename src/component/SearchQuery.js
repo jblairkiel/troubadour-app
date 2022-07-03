@@ -13,15 +13,8 @@ import {
 
 export default function SearchQuery({ searchQuery}) {
 
-	// const styles = StyleSheet.create({
-	// 	tinyLogo: {
-	// 		width: '50px',
-	// 		height: '50px',
-	// 		display: "inline-block"
-	// 	},
-	//   });
 	let colCount = 5
-	let mdVar = 6
+	let mdVar = 2
 
 	//Index is needed to keep track of the current element that we are one.
 	let index = 0
@@ -59,7 +52,7 @@ const GridSystem = ({ colCount, children, searchTitle }) => {
 		let queryResults = renderRows(titleData, colCount, rowCount)
 
 		return (
-			<div style={{height: '3200px', overflowY: true}}>
+			<div>
 				{header}
 				{queryResults}
 			</div>
@@ -97,7 +90,7 @@ const GridSystem = ({ colCount, children, searchTitle }) => {
         for(let col = 0; col < colCount; col++) {
             if(index < queryResults.length) {
                 cols.push(
-                    <Col className='Col' key={queryResults[index].spotify_id} md={mdVar} >
+                    <Col className='Col' key={queryResults[index].spotify_id} sm={mdVar} >
 						{queryResults[index]}
                     </Col>
                 )
@@ -124,28 +117,28 @@ const GridSystem = ({ colCount, children, searchTitle }) => {
 	
 
 	return (
+		<div>
+			<GridSystem  style={{ overflowY: true}} colCount={colCount} md={mdVar} searchTitle={'Albums'}>
+			{ searchQuery.albums.length > 0 
+			? searchQuery.albums.map(item => <Item key={item.spotify_id} id={item.spotify_id} title={item.name} src={item.images}/>) 
+			: [<p>No albums are found.</p>] }
+			</GridSystem>
+			<GridSystem  style={{ overflowY: true}} colCount={colCount} md={mdVar} searchTitle={'Albums'}>
 
-		<GridSystem colCount={colCount} md={mdVar} searchTitle={'Albums'}>
-		{ searchQuery.albums.length > 0 
-		? searchQuery.albums.map(item => <Item key={item.spotify_id} id={item.spotify_id} title={item.name} src={item.images}/>) 
-		: [<p>No tracks are found.</p>] }
-		</GridSystem>
-		/*//<Container>
-			 <GridSystem colCount={2} md={6} searchTitle={'Artists'}>
 			{ searchQuery.artists.length > 0 
-			? searchQuery.artists.map(item => <Item key={item.spotify_id} id={item.spotify_id} title={item.name} />) 
-			: [<p>No tracks are found.</p>] }
+			? searchQuery.artists.map(item => <Item key={item.spotify_id} id={item.spotify_id} title={item.name} src={item.images} />) 
+			: [<p>No artists are found.</p>] }
 			</GridSystem>
-			<GridSystem colCount={2} md={6} searchTitle={'Genres'}>
+			<GridSystem  style={{ overflowY: true}} colCount={colCount} md={mdVar} searchTitle={'Albums'}>
 			{ searchQuery.genres.length > 0 
-			? searchQuery.genres.map(item => <Item key={item.spotify_id} id={item.spotify_id} title={item.name} />) 
+			? searchQuery.genres.map(item => <Item key={item.spotify_id} id={item.spotify_id} title={item.name} src={item.images} />) 
+			: [<p>No genres are found.</p>] }
+			</GridSystem>
+			<GridSystem  style={{ overflowY: true}} colCount={colCount} md={mdVar} searchTitle={'Albums'}>
+			{ searchQuery.tracks.length > 0 
+			? searchQuery.tracks.map(item => <Item key={item.spotify_id} id={item.spotify_id} title={item.name} src={item.images} />) 
 			: [<p>No tracks are found.</p>] }
 			</GridSystem>
-			<GridSystem colCount={2} md={6} searchTitle={'Tracks'}>
-			{ searchQuery.tracks.length > 0 
-			? searchQuery.tracks.map(item => <Item key={item.spotify_id} id={item.spotify_id} title={item.name} />) 
-			: [<p>No tracks are found.</p>] }
-			</GridSystem> 
-		//</Container>*/
+		</div>
 	)
 }

@@ -23,7 +23,7 @@ function SearchScreen() {
   	};
 
 	return (
-		<div>
+		<div className="App">
 			<div style={{inline: 1, alignItems: "left", justifyContent: "left", padding: '1%'}}>
 			<Form onSubmit={(e)=> handleSubmit(e)}  onKeyDown={(e) => checkKeyDown(e)} >
 				<Form.Control
@@ -35,7 +35,7 @@ function SearchScreen() {
 			</Form>
 			
 			{Object.keys(data.results).length > 0 ?
-			<div style={{height:'100%', overflowY:"auto"}} > 
+			<div > 
 				<Search searchQuery={data.results.data} /> 
 			</div>
 			: null } 
