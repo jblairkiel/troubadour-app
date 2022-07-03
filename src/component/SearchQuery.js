@@ -27,11 +27,11 @@ export default function SearchQuery({ searchQuery}) {
 	let index = 0
 
 	const Item = props => {
-		
+		const { propName, srcProps } = props
 		return (
-			<Card>
-				{props.images.length > 0 ? 
-				<Card.Img variant='top' style={{ width: '18rem' }} src={props.images[0].url} />  : null
+			<Card key={props.id}>
+				{props.src.length > 0 ? 
+				<Card.Img variant='top' style={{ width: '18rem' }} src={props.src[0].url} />  : null
 				}
 				<Card.Body>
 					<Card.Title>{props.name}</Card.Title>
@@ -81,7 +81,7 @@ export default function SearchQuery({ searchQuery}) {
 			let renderResults = renderCols(searchQuery, colCount, rowCount, index)
 
 			rows.push(
-				<Row className='Row'>
+				<Row className='Row' key={index} >
 					{
 						renderResults.cols
 					}
@@ -105,7 +105,7 @@ export default function SearchQuery({ searchQuery}) {
         for(let col = 0; col < colCount; col++) {
             if(index < queryResults.length) {
                 cols.push(
-                    <Col className='Col' md={mdVar} key={queryResults[index].spotify_id}>
+                    <Col className='Col' key={queryResults[index].spotify_id} md={mdVar} >
 						{queryResults[index]}
                     </Col>
                 )
@@ -118,13 +118,13 @@ export default function SearchQuery({ searchQuery}) {
 
 	return (
 
-		<Container>
-			<GridSystem colCount={2} md={mdVar} searchTitle={'Albums'}>
-			{ searchQuery.albums.length > 0 
-			? searchQuery.albums.map(item => <Item key={item.spotify_id} id={item.spotify_id} title={item.name} />) 
-			: [<p>No tracks are found.</p>] }
-			</GridSystem>
-			{/* <GridSystem colCount={2} md={6} searchTitle={'Artists'}>
+		<GridSystem colCount={2} md={mdVar} searchTitle={'Albums'}>
+		{ searchQuery.albums.length > 0 
+		? searchQuery.albums.map(item => <Item key={item.spotify_id} id={item.spotify_id} title={item.name} src={item.images}/>) 
+		: [<p>No tracks are found.</p>] }
+		/></GridSystem>
+		/*//<Container>
+			 <GridSystem colCount={2} md={6} searchTitle={'Artists'}>
 			{ searchQuery.artists.length > 0 
 			? searchQuery.artists.map(item => <Item key={item.spotify_id} id={item.spotify_id} title={item.name} />) 
 			: [<p>No tracks are found.</p>] }
@@ -138,7 +138,7 @@ export default function SearchQuery({ searchQuery}) {
 			{ searchQuery.tracks.length > 0 
 			? searchQuery.tracks.map(item => <Item key={item.spotify_id} id={item.spotify_id} title={item.name} />) 
 			: [<p>No tracks are found.</p>] }
-			</GridSystem> */}
-		</Container>
+			</GridSystem> 
+		//</Container>*/
 	)
 }
