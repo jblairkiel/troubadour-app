@@ -22,10 +22,11 @@ export default function SearchQuery({ searchQuery}) {
 		return (
 			<Card key={props.id}>
 				{props.src.length > 0 ? 
-				<Card.Img variant='top' src={props.src[0].url} />  : null
+				<Card.Img variant='top' style={{"maxHeight": "14rem", "maxWidth": "14rem", "minHeight": "8rem", "minHeight": "8rem"}} src={props.src[0].url} />  
+				: <Card.Img variant='top' style={{"maxHeight": "14rem", "maxWidth": "14rem","minHeight": "14rem", "minHeight": "14rem"}} />
 				}
 				<Card.Body>
-					<a>{props.title}</a>
+					<a style={{"white-space": "nowrap", "overflow": "hidden", "text-overflow": "ellipsis", "max-width": "14rem"}}>{props.title}</a>
 				</Card.Body>
 			</Card>
 		)
