@@ -45,12 +45,12 @@ const GridSystem = ({ colCount, children, searchTitle }) => {
 	//This is the driver function for building the grid system.
 	const buildGrid = (titleName, titleData, colCount, rowCount) => {
 		let header = (
-			<h4>{titleName}</h4>
+			<h4 key={titleName+"Header"}>{titleName}</h4>
 		)
 		let queryResults = renderRows(titleData, colCount, rowCount)
 
 		return (
-			<div>
+			<div key={titleData+ "titleContents"}>
 				{header}
 				{queryResults}
 			</div>
@@ -65,7 +65,7 @@ const GridSystem = ({ colCount, children, searchTitle }) => {
 			let renderResults = renderCols(searchQuery, colCount, rowCount, index)
 
 			rows.push(
-				<Row className='Row' key={searchQuery[index]+row.toString()} >
+				<Row className='Row' key={searchQuery[row].key+"renderRows"} >
 					{
 						renderResults.cols
 					}
@@ -74,7 +74,7 @@ const GridSystem = ({ colCount, children, searchTitle }) => {
 			index = renderResults.index
 		}
 		let container = (
-			<Container>
+			<Container key={searchQuery[0].spotify_id + "renderRowsContainer"}>
 				{rows}
 			</Container>
 		)
@@ -88,7 +88,7 @@ const GridSystem = ({ colCount, children, searchTitle }) => {
         for(let col = 0; col < colCount; col++) {
             if(index < queryResults.length) {
                 cols.push(
-                    <Col className='Col' key={queryResults[index].spotify_id}  >
+                    <Col className='Col' key={queryResults[index].key + "renderCols"}  >
 						{queryResults[index]}
                     </Col>
                 )
@@ -100,7 +100,13 @@ const GridSystem = ({ colCount, children, searchTitle }) => {
     }
 
 	return (
-		<Container className='Container'>
+		children[0].type == "p" ? 
+
+		<Container key={searchTitle + "buildResults"} className='Container'>
+			<p key={searchTitle + "noResults"}>No albums are found.</p>
+		</Container>
+		:
+		<Container key={searchTitle + "buildResults"} className='Container'>
 			{
 				buildResults(colCount, children, searchTitle)
 			}
@@ -116,30 +122,30 @@ const GridSystem = ({ colCount, children, searchTitle }) => {
 
 	return (
 		<div>
-			<GridSystem colCount={colCount} md={mdVar} searchTitle={'Top Result'}>
+			<GridSystem key={1} colCount={colCount} md={mdVar} searchTitle={'Top Result'}>
 			{ [searchQuery.top_result].length > 0 
 			? [searchQuery.top_result].map(item => <Item key={item.spotify_id} id={item.spotify_id} title={item.name} src={item.images}/>) 
-			: [<p></p>] }
+			: [<p key={11}>No Top Result</p>] }
 			</GridSystem>
-			<GridSystem colCount={colCount} md={mdVar} searchTitle={'Albums'}>
+			<GridSystem key={2} colCount={colCount} md={mdVar} searchTitle={'Albums'}>
 			{ searchQuery.albums.length > 0 
 			? searchQuery.albums.map(item => <Item key={item.spotify_id} id={item.spotify_id} title={item.name} src={item.images}/>) 
-			: [<p>No albums are found.</p>] }
+			: [<p key={22}>No albums are found.</p>] }
 			</GridSystem>
-			<GridSystem   colCount={colCount} md={mdVar} searchTitle={'Artists'}>
+			<GridSystem key={3} colCount={colCount} md={mdVar} searchTitle={'Artists'}>
 			{ searchQuery.artists.length > 0 
 			? searchQuery.artists.map(item => <Item key={item.spotify_id} id={item.spotify_id} title={item.name} src={item.images} />) 
-			: [<p>No artists are found.</p>] }
+			: [<p key={33}>No artists are found.</p>] }
 			</GridSystem>
-			<GridSystem colCount={colCount} md={mdVar} searchTitle={'Genres'}>
+			<GridSystem key={4} colCount={colCount} md={mdVar} searchTitle={'Genres'}>
 			{ searchQuery.genres.length > 0 
 			? searchQuery.genres.map(item => <Item key={item.spotify_id} id={item.spotify_id} title={item.name} src={item.images} />) 
-			: [<p>No genres are found.</p>] }
+			: [<p key={44} >No genres are found.</p>] }
 			</GridSystem>
-			<GridSystem colCount={colCount} md={mdVar} searchTitle={'Tracks'}>
+			<GridSystem key={5} colCount={colCount} md={mdVar} searchTitle={'Tracks'}>
 			{ searchQuery.tracks.length > 0 
 			? searchQuery.tracks.map(item => <Item key={item.spotify_id} id={item.spotify_id} title={item.name} src={item.images} />) 
-			: [<p>No tracks are found.</p>] }
+			: [<p key={55}>No tracks are found.</p>] }
 			</GridSystem>
 		</div>
 	)
