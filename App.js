@@ -26,7 +26,7 @@ function SearchScreen() {
 	return (
 		<View style={{flex:1,  alignItems: "left", justifyContent: "left", padding: '1%'}}>
 
-			<Form onSubmit={(e)=> handleSubmit(e)}  onKeyDown={(e) => checkKeyDown(e)} >
+			<Form style={{padding: '1%'}} onSubmit={(e)=> handleSubmit(e)}  onKeyDown={(e) => checkKeyDown(e)} >
 				<Form.Control
 				type="text"
 				placeholder="Search Spotify"
