@@ -1,27 +1,46 @@
 // @src/components/SearchQuery.jsx
 
 import React from "react";
+import { ScrollView } from "react-native";
 import {Card} from 'react-bootstrap';
-import GridSystem from "./GridSystem";
+import {
+    Row,
+    Col,
+    Container
+} from 'react-bootstrap'
 
-class SearchQuery extends React.Component {
+export default function SearchQuery({ searchQuery}) {
 
+	let colCount = 5
+	let mdVar = 1
 
-	constructor(props) {
-		let colCount = 5
-		let mdVar = 1
-		let searchQuery = props.searchQuery
-		super(props);
-		
-		this.state = {
-			heightSet: 0,
-		};
-		this.updateDimensions = this.updateDimensions.bind(this);
+	//Index is needed to keep track of the current element that we are one.
+	let index = 0
+
+	const Item = props => {
+		const { propName, srcProps } = props
+		return (
+			<Card key={props.id}>
+				{props.src.length > 0 ? 
+				<Card.Img variant='top' src={props.src[0].url} />  : null
+				}
+				<Card.Body>
+					<a>{props.title}</a>
+				</Card.Body>
+			</Card>
+		)
 	}
+	
+const GridSystem = ({ colCount, children, searchTitle }) => {
 
-	componentDidMount() {
-		this.updateDimensions();
-		window.addEventListener('resize', this.updateDimensions);
+	let index = 0
+	const buildResults = (colCount, searchQuery, searchTitle) => {
+		let rowCount = Math.floor(searchQuery.length / colCount) + 1
+		let results = []
+		results.push(buildGrid(searchTitle, searchQuery, colCount, rowCount))
+		return(
+			results
+		)
 	}
 	//This is the driver function for building the grid system.
 	const buildGrid = (titleName, titleData, colCount, rowCount) => {
@@ -38,27 +57,28 @@ class SearchQuery extends React.Component {
 		)
 	}
 
-	updateDimensions() {
-		this.setState({ heightSet: document.body.scrollHeight });
-		console.log(document.body.scrollHeight);
-	}
+	//Returns For example, we can have a row with 2 columns inside it.
+	const renderRows = (searchQuery, colCount, rowCount) => {
+
+		let rows = []
+		for(let row = 0; row < rowCount; row++) {
+			let renderResults = renderCols(searchQuery, colCount, rowCount, index)
 
 			rows.push(
 				<Row className='Row' key={searchQuery[row].key+"renderRows"} >
 					{
 						renderResults.cols
 					}
-					<Card.Body>
-						<a>{props.title}</a>
-					</Card.Body>
-				</Card>
+				</Row>
 			)
+			index = renderResults.index
 		}
 		let container = (
 			<Container key={searchQuery[0].spotify_id + "renderRowsContainer"}>
 				{rows}
 			</Container>
 		)
+		return container
 	}
 	//Returns an array of columns with the children inside.
 	const renderCols = (queryResults, colCount, rowCount, index) => {

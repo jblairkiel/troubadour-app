@@ -4,12 +4,12 @@
     "slug": "my-app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/ic_troubadour_logo_no_text-web.png",
+    "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/troubadour_logo_notext_dark-web.png",
+      "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#808080"
+      "backgroundColor": "#ffffff"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -22,12 +22,12 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/troubadour_logo_notext_dark-web.png",
-        "backgroundColor": "#808080"
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
       }
     },
     "web": {
-      "favicon": "./assets/ic_troubadour_logo_no_text-web.png"
+      "favicon": "./assets/favicon.png"
     }
   }
 }
