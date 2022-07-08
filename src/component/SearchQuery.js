@@ -1,12 +1,14 @@
 // @src/components/SearchQuery.jsx
 
 import React from "react";
-import { ScrollView } from "react-native";
+import { ListViewBase, ScrollView } from "react-native";
 import {Card} from 'react-bootstrap';
 import {
     Row,
     Col,
-    Container
+    Container,
+	ListGroup,
+	ListGroupItem
 } from 'react-bootstrap'
 
 export default function SearchQuery({ searchQuery}) {
@@ -116,11 +118,6 @@ const GridSystem = ({ colCount, children, searchTitle }) => {
 	);
 }
 
-
-	
-
-
-	
 
 	return (
 		<div>
