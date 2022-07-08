@@ -19,14 +19,15 @@ export default function SearchQuery({ searchQuery}) {
 
 	const Item = props => {
 		const { propName, srcProps } = props
+		/* Card style below for squarestyle={{"height": "18vw", "width": "18vw"}} */
 		return (
 			<Card key={props.id}>
 				{props.src.length > 0 ? 
-				<Card.Img variant='top' style={{"maxHeight": "14rem", "maxWidth": "14rem", "minHeight": "8rem", "minHeight": "8rem"}} src={props.src[0].url} />  
+				<Card.Img variant='top' style={{"maxHeight": "14rem", "maxWidth": "14rem", "minHeight": "8rem", "minHeight": "8rem", "alignSelf": "center", "marginTop": "5%"}} src={props.src[0].url} />  
 				: <Card.Img variant='top' style={{"maxHeight": "14rem", "maxWidth": "14rem","minHeight": "14rem", "minHeight": "14rem"}} />
 				}
-				<Card.Body>
-					<a style={{"white-space": "nowrap", "overflow": "hidden", "text-overflow": "ellipsis", "max-width": "14rem"}}>{props.title}</a>
+				<Card.Body style={{"whiteSpace": "nowrap", "overflow": "hidden", "textOverflow": "ellipsis", "maxWidth": "14rem"}}>
+					{props.title}
 				</Card.Body>
 			</Card>
 		)
