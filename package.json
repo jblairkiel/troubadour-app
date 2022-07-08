@@ -7,8 +7,7 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "eject": "expo eject",
-    "lint": "eslint App.js src/**/*.js src/**/*.jsx"
+    "eject": "expo eject"
   },
   "dependencies": {
     "@react-navigation/bottom-tabs": "^6.3.1",
@@ -28,9 +27,7 @@
     "react-native-web": "0.17.7"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.9",
-    "eslint": "^8.19.0",
-    "eslint-plugin-react": "^7.30.1"
+    "@babel/core": "^7.12.9"
   },
   "private": true
 }
