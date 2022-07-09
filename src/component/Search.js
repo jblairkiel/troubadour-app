@@ -4,7 +4,13 @@ import React from "react";
 import SearchQuery from "./SearchQuery";
 
 export default function Search({ searchQuery }) {
-  return (
-      <SearchQuery searchQuery={searchQuery}></SearchQuery>
-  )
+
+	//Props validation
+	Search.propTypes = {
+		searchQuery: PropTypes.isRequired
+	};
+
+	return (
+		<SearchQuery searchQuery={searchQuery}></SearchQuery>
+	)
 }
