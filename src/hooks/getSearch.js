@@ -1,10 +1,10 @@
-// @src/hooks/useFetch.js
+// @src/hooks/getSearch.js
 
 import { useState, useEffect } from "react";
 
 import troubadour from "../api/troubadour";
 
-const useFetch = () => {
+const getSearch = () => {
 	const [data, setData] = useState({
 		slug: "",
 		results: {},
@@ -15,7 +15,7 @@ const useFetch = () => {
 			const timeoutId = setTimeout(() => {
 				const fetch = async () => {
 					try {
-						const res = await troubadour.get(`/${data.slug}`);
+						const res = await troubadour.get(`search?q=/${data.slug}`);
 						setData({ ...data, results: res.data });
 					} catch (err) {
 						console.error(err);
@@ -30,4 +30,4 @@ const useFetch = () => {
 	return { data, setData };
 };
 
-export default useFetch;
+export default getSearch;

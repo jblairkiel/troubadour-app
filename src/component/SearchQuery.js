@@ -4,6 +4,7 @@ import React from "react";
 import {Card} from "react-bootstrap";
 import ListGroup from "react-bootstrap/ListGroup"
 //import ListGroupItem from "react-bootstrap/ListGroupItem";
+import PropTypes from 'prop-types';
 
 export default function SearchQuery({ searchQuery}) {
 

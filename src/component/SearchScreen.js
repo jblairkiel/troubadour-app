@@ -1,12 +1,11 @@
 
 
 import {React} from "react";
-import useFetch from "../hooks/useFetch"
+import getSearch from "../hooks/getSearch"
 import Search from "../component/Search";
 import {ScrollView, View} from "react-native";
 import {Form} from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-
 
 
 function SearchScreen({}) {
@@ -15,7 +14,7 @@ function SearchScreen({}) {
 	// SearchScreen.propTypes = {
 	// 	navigation: PropTypes.component.isRequired
 	// };
-	const { data, setData } = useFetch();
+	const { data, setData } = getSearch();
 
 	const handleSubmit = (e) => {
     	if (e.code === "Enter") e.preventDefault();
