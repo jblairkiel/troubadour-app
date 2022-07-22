@@ -13,7 +13,8 @@ function LoginComponent() {
 	// 	navigation: PropTypes.isRequired
 	// };
 
-	const { userId, setUserId } = React.useContext(TroubadourContext);
+	const { userId, setUserId} = React.useContext(TroubadourContext);
+	//const { userId, setUserId } = React.useContext(TroubadourContext);
 
 	const CLIENT_ID = "a9fc8ed15eeb4790b184ab648dd4ebf5"
 	const REDIRECT_URI = "http://localhost:19006"
