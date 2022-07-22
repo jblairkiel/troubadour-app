@@ -1,12 +1,12 @@
 // @src/components/SearchQuery.jsx
 
 import React from "react";
-import {Card} from "react-bootstrap";
+import { Card } from "react-bootstrap";
 import ListGroup from "react-bootstrap/ListGroup"
 //import ListGroupItem from "react-bootstrap/ListGroupItem";
 import PropTypes from 'prop-types';
 
-export default function SearchQuery({ searchQuery}) {
+export default function SearchQuery({ searchQuery }) {
 
 	//Props validation
 	SearchQuery.propTypes = {
@@ -34,8 +34,8 @@ export default function SearchQuery({ searchQuery}) {
 		return (
 			<ListGroup.Item key={props.id}>
 				<Card>
-					{props.src.length > 0 ? 
-						<Card.Img variant='top' style={{maxHeight: "12rem", maxWidth: "12rem"}} src={props.src[0].url} />  : null
+					{props.src.length > 0 ?
+						<Card.Img variant='top' style={{ maxHeight: "12rem", maxWidth: "12rem" }} src={props.src[0].url} /> : null
 					}
 					<Card.Body>
 						<a>{props.title}</a>
@@ -44,39 +44,47 @@ export default function SearchQuery({ searchQuery}) {
 			</ListGroup.Item>
 		)
 	}
-	
+
 
 	return (
 		<ListGroup key={0}>
-		
-			<ListGroup.Item key={1} ><h4>Top Result</h4></ListGroup.Item>
-			{ searchQuery.top_result.length > 0 
-				? searchQuery.top_result.map(item => <Item key={item.spotify_id + "topresult"} id={item.spotify_id + "topresult"} title={item.name} src={item.images}/>) 
-				: [<p key={11}>No Top Result</p>] }
- 
+			{searchQuery.top_result != undefined
+				? <ListGroup.Item key={1} ><h4>Top Result</h4></ListGroup.Item>
+				: null}
+			{searchQuery.top_result != undefined
+				? searchQuery.top_result.map(item => <Item key={item.spotify_id + "topresult"} id={item.spotify_id + "topresult"} title={item.name} src={item.images} />)
+				: null}
 
-			<ListGroup.Item key={2}><h4>Albums</h4></ListGroup.Item>
-			{ searchQuery.albums.length > 0 
-				? searchQuery.albums.map(item => <Item key={item.spotify_id + "album"} id={item.spotify_id + "album"} title={item.name} src={item.images}/>) 
-				: [<p key={22}>No Album Results</p>] }
+			{searchQuery.albums.length > 0 ?
+				<ListGroup.Item key={2}><h4>Albums</h4></ListGroup.Item>
+				: null}
+			{searchQuery.albums.length > 0
+				? searchQuery.albums.map(item => <Item key={item.spotify_id + "album"} id={item.spotify_id + "album"} title={item.name} src={item.images} />)
+				: [null]}
 
-			<ListGroup.Item key={3}><h4>Artists</h4></ListGroup.Item>
-			{ searchQuery.artists.length > 0 
-				? searchQuery.artists.map(item => <Item key={item.spotify_id + "album"} id={item.spotify_id + "album"} title={item.name} src={item.images}/>) 
-				: [<p key={33} >No Artist Results</p>] }
-
-
-			<ListGroup.Item key={4}><h4>Genres</h4></ListGroup.Item>
-			{ searchQuery.genres.length > 0 
-				? searchQuery.genres.map(item => <Item key={item.spotify_id + "album"} id={item.spotify_id + "album"} title={item.name} src={item.images}/>) 
-				: [<p key={44} >No Genre Results</p>] }
+			{searchQuery.artists.length > 0 ?
+				<ListGroup.Item key={3}><h4>Artists</h4></ListGroup.Item>
+				: null}
+			{searchQuery.artists.length > 0
+				? searchQuery.artists.map(item => <Item key={item.spotify_id + "album"} id={item.spotify_id + "album"} title={item.name} src={item.images} />)
+				: [null]}
 
 
-			<ListGroup.Item key={5}><h4>Tracks</h4></ListGroup.Item>
-			{ searchQuery.tracks.length > 0 
-				? searchQuery.tracks.map(item => <Item key={item.spotify_id + "album"} id={item.spotify_id + "album"} title={item.name} src={item.images}/>) 
-				: [<p key={55} >No Track Results</p>] }
+			{searchQuery.genres.length > 0 ?
+				<ListGroup.Item key={4}><h4>Genres</h4></ListGroup.Item>
+				: null}
+			{searchQuery.genres.length > 0
+				? searchQuery.genres.map(item => <Item key={item.spotify_id + "album"} id={item.spotify_id + "album"} title={item.name} src={item.images} />)
+				: [null]}
+
+
+			{searchQuery.tracks.length > 0 ?
+				<ListGroup.Item key={5}><h4>Tracks</h4></ListGroup.Item>
+				: null}
+			{searchQuery.tracks.length > 0
+				? searchQuery.tracks.map(item => <Item key={item.spotify_id + "album"} id={item.spotify_id + "album"} title={item.name} src={item.images} />)
+				: [null]}
 		</ListGroup>
-			
+
 	)
 }

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 
-import troubadour from "../api/troubadour";
+import troubadour from "../../api/troubadour";
 
 const getSearch = () => {
 	const [data, setData] = useState({

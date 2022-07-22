@@ -1,5 +1,5 @@
 import {React} from "react";
-import getUserPreferences from "../hooks/getUserPreferences"
+import getUserPreferences from "../hooks/userPreferences/getUserPreferences"
 import Search from "../component/Search";
 import {ScrollView, View} from "react-native";
 import { Button} from "react-bootstrap";
@@ -15,14 +15,10 @@ function MyPreferencesScreen({navigation}) {
 	// MyPreferencesScreen.propTypes = {
 	// 	navigation.push: PropTypes.fun.isRequired
 	// };
-
-	//const [userPreferences, setUserPreferences] = useState([])
-	//const { userPreferences, setUserPreferences } = getSearch();
 	
-	// 	setUserData(data)
-	// }
-
-	const { data } = getUserPreferences();
+	// eslint-disable-next-line no-unused-vars
+	const {userPreferences, setUserPreferences } = getUserPreferences("jblairkiel");
+	
 	return (
 		<View style={{flex:1,  alignItems: "left", justifyContent: "left", padding: "1%"}}>
 
@@ -32,10 +28,9 @@ function MyPreferencesScreen({navigation}) {
 				// eslint-disable-next-line react/prop-types
 				onClick={() => navigation.push("PreferencesSearchScreen")}
 			> Add</Button>
-
-			{Object.keys(data.results).length > 0 ?
+			{Object.keys(userPreferences.prefs).length   ?
 				<ScrollView contentContainerStyle={{ flexGrow: 1 }}> 
-					<Search searchQuery={data.results.data} /> 
+					<Search searchQuery={userPreferences.prefs.data} /> 
 				</ScrollView>
 				: null } 
 		</View>
