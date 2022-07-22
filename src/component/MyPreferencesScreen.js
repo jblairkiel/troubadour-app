@@ -29,7 +29,9 @@ function MyPreferencesScreen({navigation}) {
 				variant="primary" 
 				style={{"float": "right"}}
 				// eslint-disable-next-line react/prop-types
-				onClick={() => navigation.push("PreferencesSearchScreen")}
+				onClick={() => navigation.push("PreferencesSearchScreen", {
+					userId: userId
+				})}
 			> Add</Button>
 			{Object.keys(userPreferences.prefs).length   ?
 				<ScrollView contentContainerStyle={{ flexGrow: 1 }}> 
