@@ -1,8 +1,9 @@
-import {React, useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import { View} from "react-native";
 import {Button} from "react-bootstrap";
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { TroubadourContext } from "../context/troubadourContext";
 
 
 function HomeScreen() {
@@ -12,14 +13,14 @@ function HomeScreen() {
 	// 	navigation: PropTypes.isRequired
 	// };
 
+	const { userId, setUserId } = React.useContext(TroubadourContext);
+
 	const CLIENT_ID = "a9fc8ed15eeb4790b184ab648dd4ebf5"
 	const REDIRECT_URI = "http://localhost:19006"
 	const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize"
 	const RESPONSE_TYPE = "token"
 
 	const [token, setToken] = useState("")
-	//const [hash, setHash] = useState("")
-	const [userData, setUserData] = useState([])
 
 	const getUserData = async (e) => {
 		const {data} = await axios.get("https://api.spotify.com/v1/me", {
@@ -28,7 +29,7 @@ function HomeScreen() {
 			}
 		})
 	
-		setUserData(data)
+		setUserId(data)
 	}
 	
 	  
@@ -58,7 +59,7 @@ function HomeScreen() {
 	const renderUserData = () => {
 		return (
 			<div>
-				{ userData != [] ? <h3>{userData.display_name}</h3> : <div>No Data</div>}
+				{ userId.id != "" ? <h3>{userId.display_name}</h3> : <div>No Data</div>}
 				
 			</div>
 		)

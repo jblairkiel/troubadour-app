@@ -7,6 +7,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from "./src/component/HomeScreen"
 import SearchScreen from "./src/component/SearchScreen.js"
 import MyPreferencesScreen from "./src/component/MyPreferencesScreen.js"
+import { TroubadourContextProvider } from "./src/context/troubadourContext";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Root() {
@@ -14,10 +15,12 @@ function Root() {
 	const Tab = createBottomTabNavigator();
 
 	return (
-	  	<Tab.Navigator>
-			<Tab.Screen name="Home" component={HomeScreen} />
-			<Tab.Screen name="My Preferences" component={MyPreferencesScreen} />
-	  	</Tab.Navigator>
+		<TroubadourContextProvider initialUserId="">
+			<Tab.Navigator>
+				<Tab.Screen name="Home" component={HomeScreen} />
+				<Tab.Screen name="My Preferences" component={MyPreferencesScreen} />
+			</Tab.Navigator>
+		</TroubadourContextProvider>
 	);
 }
 

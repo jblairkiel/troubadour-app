@@ -1,9 +1,10 @@
-import {React} from "react";
+import React from "react";
 import getUserPreferences from "../hooks/userPreferences/getUserPreferences"
 import Search from "../component/Search";
 import {ScrollView, View} from "react-native";
 import { Button} from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { TroubadourContext } from "../context/troubadourContext";
 //import PropTypes from 'prop-types';
 //import { StackActions, NavigationActions, withNavigation } from '@react-navigation/native';
 
@@ -17,7 +18,9 @@ function MyPreferencesScreen({navigation}) {
 	// };
 	
 	// eslint-disable-next-line no-unused-vars
-	const {userPreferences, setUserPreferences } = getUserPreferences("jblairkiel");
+	const { userId, setUserId } = React.useContext(TroubadourContext);
+	// eslint-disable-next-line no-unused-vars
+	const {userPreferences, setUserPreferences } = getUserPreferences(userId.id);
 	
 	return (
 		<View style={{flex:1,  alignItems: "left", justifyContent: "left", padding: "1%"}}>
