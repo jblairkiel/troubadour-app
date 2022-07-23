@@ -115,13 +115,13 @@ export default function SearchQuery(props) {
 			<ListGroup.Item key={props.id}>
 				<Card>
 					{props.searchType == "addOnly"
-						? <PlusCircleFill color="green" size={30} onClick={() => {
+						? <PlusCircleFill color="green" size={22} onClick={() => {
 							handleAddClick(props).then(() => {
 								getUserPreferences(userId.id);
 							});
 						}} />
 						: props.searchType == "removeOnly"
-							? <DashCircleFill color="red" size={30} onClick={() => {
+							? <DashCircleFill color="red" size={22} onClick={() => {
 								handleRemoveClick(props).then(() => {
 									getUserPreferences(userId.id);
 								});
@@ -129,7 +129,7 @@ export default function SearchQuery(props) {
 							: null
 					}
 					{props.src.length > 0 ?
-						<Card.Img variant='top' style={{ maxHeight: "12rem", maxWidth: "12rem" }} src={props.src[0].url} /> : null
+						<Card.Img variant='top' style={{ maxHeight: "6rem", maxWidth: "6rem" }} src={props.src[0].url} /> : null
 					}
 					<Card.Body>
 						<a>{props.name}</a>

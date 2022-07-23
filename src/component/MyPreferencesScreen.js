@@ -27,7 +27,7 @@ function MyPreferencesScreen({navigation}) {
 
 			<Button 
 				variant="primary" 
-				style={{"float": "right"}}
+				style={{"marginLeft": "80%", "float": "right", "width": "14rem"}}
 				// eslint-disable-next-line react/prop-types
 				onClick={() => navigation.push("PreferencesSearchScreen", {
 					userId: userId
