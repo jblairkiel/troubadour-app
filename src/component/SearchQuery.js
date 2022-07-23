@@ -7,7 +7,7 @@ import { Card, Spinner } from "react-bootstrap";
 import ListGroup from "react-bootstrap/ListGroup"
 //import ListGroupItem from "react-bootstrap/ListGroupItem";
 import PropTypes from 'prop-types';
-import { PlusCircleFill } from 'react-bootstrap-icons';
+import { PlusCircleFill, DashCircleFill } from 'react-bootstrap-icons';
 import getUserPreferences from "../hooks/userPreferences/getUserPreferences";
 import troubadour from "../api/troubadour";
 //import addUserPreference from "../hooks/userPreferences/addUserPreference";
@@ -26,12 +26,12 @@ export default function SearchQuery(props) {
 	const { userId, setUserId } = React.useContext(TroubadourContext);
 	const { userPreferences, setUserPreferences } = getUserPreferences(userId.id);
 	//const userPrefRef = React.useRef();
-	//userPrefRef.userPreferences = count;
+	//userPrefRef.getUserPreferences(userId.id) = count;
 
 	function getFieldsHelper(input) {
 
 		var output = [];
-		for (var i = 0; i < input.length; ++i){
+		for (var i = 0; i < input.length; ++i) {
 			var newItem = {}
 			newItem["spotify_uri"] = input[i]["uri"];
 			newItem["name"] = input[i]["name"];
@@ -48,7 +48,7 @@ export default function SearchQuery(props) {
 		output = output.concat(getFieldsHelper(input.data.tracks, 'tracks'))
 		return output;
 	}
-	async function handleClick(props) {
+	async function handleAddClick(props) {
 		const newPrefs = getPrefsAsFlatArray(props.userPrefs.prefs);
 		newPrefs.push({ spotify_uri: props.spotify_uri, name: props.name });
 		props.setPrefs({ ...props.userPrefs, prefs: newPrefs })
@@ -56,11 +56,33 @@ export default function SearchQuery(props) {
 
 		const fetch = async () => {
 			try {
-				const result = await troubadour.put(`preferences`,newPrefs,
+				await troubadour.put(`preferences`, newPrevs,
 					{
 						headers: {
 							"X-USER-ID": userId.id
 						}
+					}).then((res) => {
+					return res;
+				});
+			} catch (err) {
+				console.error(err);
+			}
+		};
+		fetch();
+	}
+
+	async function handleRemoveClick(props) {
+		//const newPrefs = {ids: }
+		//props.userPrefs.setUserPreferences(...props.userPrefs.userPreferences, newPrefs)
+
+		const fetch = async () => {
+			try {
+				await troubadour.delete(`preferences?ids=` + props.spotify_uri,
+					{
+						headers: {
+							"X-USER-ID": userId.id
+						}
+						
 					}).then((res) => {
 					return res;
 				});
@@ -92,13 +114,19 @@ export default function SearchQuery(props) {
 		return (
 			<ListGroup.Item key={props.id}>
 				<Card>
-					{props.searchType == "editable"
+					{props.searchType == "addOnly"
 						? <PlusCircleFill color="green" size={30} onClick={() => {
-							handleClick(props).then(() => {
+							handleAddClick(props).then(() => {
 								getUserPreferences(userId.id);
 							});
 						}} />
-						: null
+						: props.searchType == "removeOnly"
+							? <DashCircleFill color="red" size={30} onClick={() => {
+								handleRemoveClick(props).then(() => {
+									getUserPreferences(userId.id);
+								});
+							}} />
+							: null
 					}
 					{props.src.length > 0 ?
 						<Card.Img variant='top' style={{ maxHeight: "12rem", maxWidth: "12rem" }} src={props.src[0].url} /> : null

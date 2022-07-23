@@ -35,7 +35,7 @@ function MyPreferencesScreen({navigation}) {
 			> Add</Button>
 			{Object.keys(userPreferences.prefs).length   ?
 				<ScrollView contentContainerStyle={{ flexGrow: 1 }}> 
-					<Search searchQuery={userPreferences.prefs.data} searchType={""} /> 
+					<Search searchQuery={userPreferences.prefs.data} searchType={"removeOnly"} /> 
 				</ScrollView>
 				: null } 
 		</View>
