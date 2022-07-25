@@ -20,7 +20,8 @@ export default function Search(props) {
 		<View>
 			{
 				props != undefined 
-					? <SearchQuery searchQuery={props.searchQuery} searchType={props.searchType}></SearchQuery>
+					? 
+					<SearchQuery searchQuery={props.searchQuery} userPreferences={props.userPreferences} triggerReloadFunction={props.triggerReloadFunction} searchType={props.searchType}></SearchQuery>
 					: null
 			}
 		</View>

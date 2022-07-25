@@ -3,7 +3,7 @@
 
 import React from "react";
 import { View } from "react-native";
-import { Card, Spinner } from "react-bootstrap";
+import { Card } from "react-bootstrap";
 import ListGroup from "react-bootstrap/ListGroup"
 //import ListGroupItem from "react-bootstrap/ListGroupItem";
 import PropTypes from 'prop-types';
@@ -20,13 +20,14 @@ export default function SearchQuery(props) {
 	// 	props.searchQuery: PropTypes.array.isRequired,
 	// 	props.searchType: PropTypes.string.isRequired,
 	// };
-	const searchQuery = props.searchQuery;
+	
 	const searchType = props.searchType;
+	const userPreferences = props.userPreferences;
+	const searchQuery = props.userPreferences.prefs.data;
+	const triggerReloadFunction = props.triggerReloadFunction;
 	// eslint-disable-next-line no-unused-vars
 	const { userId, setUserId } = React.useContext(TroubadourContext);
-	const { userPreferences, setUserPreferences } = getUserPreferences(userId.id);
-	//const userPrefRef = React.useRef();
-	//userPrefRef.getUserPreferences(userId.id) = count;
+	//const { userPreferences, setUserPreferences } = getUserPreferences(userId.id);
 
 	function getFieldsHelper(input) {
 
@@ -51,18 +52,19 @@ export default function SearchQuery(props) {
 	async function handleAddClick(props) {
 		const newPrefs = getPrefsAsFlatArray(props.userPrefs.prefs);
 		newPrefs.push({ spotify_uri: props.spotify_uri, name: props.name });
-		props.setPrefs({ ...props.userPrefs, prefs: newPrefs })
 		//props.userPrefs.setUserPreferences(...props.userPrefs.userPreferences, newPrefs)
 
 		const fetch = async () => {
 			try {
-				await troubadour.put(`preferences`, newPrevs,
+				await troubadour.put(`preferences`, newPrefs,
 					{
 						headers: {
 							"X-USER-ID": userId.id
 						}
 					}).then((res) => {
-					return res;
+
+					//TimingHere?
+					//props.triggerReloadFunction(res.data);
 				});
 			} catch (err) {
 				console.error(err);
@@ -82,9 +84,11 @@ export default function SearchQuery(props) {
 						headers: {
 							"X-USER-ID": userId.id
 						}
-						
-					}).then((res) => {
-					return res;
+
+					}).then((res) => 
+				{
+					//TimingHere?
+					//props.triggerReloadFunction(res.data);
 				});
 			} catch (err) {
 				console.error(err);
@@ -129,9 +133,9 @@ export default function SearchQuery(props) {
 							: null
 					}
 					{props.src.length > 0 ?
-						<Card.Img variant='top' style={{ maxHeight: "6rem", maxWidth: "6rem" }} src={props.src[0].url} /> : null
+						<Card.Img variant='top' style={{ maxHeight: "6rem", maxWidth: "6rem", display: "inline-block"}} src={props.src[0].url} /> : null
 					}
-					<Card.Body>
+					<Card.Body style={{ display: "inline-block"}}>
 						<a>{props.name}</a>
 					</Card.Body>
 				</Card>
@@ -142,52 +146,45 @@ export default function SearchQuery(props) {
 
 	return (
 		<View>
-			{searchQuery != undefined
-				?
+			<ListGroup key={0}>
+				{searchQuery.top_result != undefined
+					? <ListGroup.Item key={1} ><h4>Top Result</h4></ListGroup.Item>
+					: null}
+				{searchQuery.top_result != undefined
+					? <Item key={searchQuery.top_result.spotify_id + "topresult"} userPrefs={userPreferences} triggerReloadFunction={triggerReloadFunction} searchType={searchType} id={searchQuery.top_result.spotify_id + "topresult"} name={searchQuery.top_result.name} spotify_uri={searchQuery.top_result.uri} src={searchQuery.top_result.images} images={searchQuery.top_result.images} />
+					: null}
 
-				<ListGroup key={0}>
-					{searchQuery.top_result != undefined
-						? <ListGroup.Item key={1} ><h4>Top Result</h4></ListGroup.Item>
-						: null}
-					{searchQuery.top_result != undefined
-						? <Item key={searchQuery.top_result.spotify_id + "topresult"} userPrefs={userPreferences} setPrefs={setUserPreferences} searchType={searchType} id={searchQuery.top_result.spotify_id + "topresult"} name={searchQuery.top_result.name} spotify_uri={searchQuery.top_result.uri} src={searchQuery.top_result.images} images={searchQuery.top_result.images} />
-						: null}
+				{searchQuery.albums.length > 0 ?
+					<ListGroup.Item key={2}><h4>Albums</h4></ListGroup.Item>
+					: null}
+				{searchQuery.albums.length > 0
+					? searchQuery.albums.map(item => <Item key={item.spotify_id + "album"} userPrefs={userPreferences} triggerReloadFunction={triggerReloadFunction} searchType={searchType} id={item.spotify_id + "album"} name={item.name} spotify_uri={item.uri} src={item.images} images={item.images} />)
+					: [null]}
 
-					{searchQuery.albums.length > 0 ?
-						<ListGroup.Item key={2}><h4>Albums</h4></ListGroup.Item>
-						: null}
-					{searchQuery.albums.length > 0
-						? searchQuery.albums.map(item => <Item key={item.spotify_id + "album"} userPrefs={userPreferences} setPrefs={setUserPreferences} searchType={searchType} id={item.spotify_id + "album"} name={item.name} spotify_uri={item.uri} src={item.images} images={item.images} />)
-						: [null]}
-
-					{searchQuery.artists.length > 0 ?
-						<ListGroup.Item key={3}><h4>Artists</h4></ListGroup.Item>
-						: null}
-					{searchQuery.artists.length > 0
-						? searchQuery.artists.map(item => <Item key={item.spotify_id + "album"} userPrefs={userPreferences} setPrefs={setUserPreferences} searchType={searchType} id={item.spotify_id + "album"} name={item.name} spotify_uri={item.uri} src={item.images} images={item.images} />)
-						: [null]}
+				{searchQuery.artists.length > 0 ?
+					<ListGroup.Item key={3}><h4>Artists</h4></ListGroup.Item>
+					: null}
+				{searchQuery.artists.length > 0
+					? searchQuery.artists.map(item => <Item key={item.spotify_id + "album"} userPrefs={userPreferences} triggerReloadFunction={triggerReloadFunction} searchType={searchType} id={item.spotify_id + "album"} name={item.name} spotify_uri={item.uri} src={item.images} images={item.images} />)
+					: [null]}
 
 
-					{searchQuery.genres.length > 0 ?
-						<ListGroup.Item key={4}><h4>Genres</h4></ListGroup.Item>
-						: null}
-					{searchQuery.genres.length > 0
-						? searchQuery.genres.map(item => <Item key={item.spotify_id + "album"} userPrefs={userPreferences} setPrefs={setUserPreferences} searchType={searchType} id={item.spotify_id + "album"} name={item.name} spotify_uri={item.uri} src={item.images} images={item.images} />)
-						: [null]}
+				{searchQuery.genres.length > 0 ?
+					<ListGroup.Item key={4}><h4>Genres</h4></ListGroup.Item>
+					: null}
+				{searchQuery.genres.length > 0
+					? searchQuery.genres.map(item => <Item key={item.spotify_id + "album"} userPrefs={userPreferences} triggerReloadFunction={triggerReloadFunction} searchType={searchType} id={item.spotify_id + "album"} name={item.name} spotify_uri={item.uri} src={item.images} images={item.images} />)
+					: [null]}
 
 
-					{searchQuery.tracks.length > 0 ?
-						<ListGroup.Item key={5}><h4>Tracks</h4></ListGroup.Item>
-						: null}
-					{searchQuery.tracks.length > 0
-						? searchQuery.tracks.map(item => <Item key={item.spotify_id + "album"} userPrefs={userPreferences} setPrefs={setUserPreferences} searchType={searchType} id={item.spotify_id + "album"} name={item.name} spotify_uri={item.uri} src={item.images} images={item.images} />)
-						: [null]}
-				</ListGroup>
-				:
-				<Spinner animation="border" role="status">
-					<span className="visually-hidden">Loading...</span>
-				</Spinner>
-			}
+				{searchQuery.tracks.length > 0 ?
+					<ListGroup.Item key={5}><h4>Tracks</h4></ListGroup.Item>
+					: null}
+				{searchQuery.tracks.length > 0
+					? searchQuery.tracks.map(item => <Item key={item.spotify_id + "album"} userPrefs={userPreferences} triggerReloadFunction={triggerReloadFunction} searchType={searchType} id={item.spotify_id + "album"} name={item.name} spotify_uri={item.uri} src={item.images} images={item.images} />)
+					: [null]}
+			</ListGroup>
+
 		</View>
 
 	)

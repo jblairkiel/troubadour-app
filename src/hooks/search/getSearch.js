@@ -1,33 +1,39 @@
 // @src/hooks/getSearch.js
 
-import { useState, useEffect } from "react";
-
+import {useEffect, useState} from "react";
 import troubadour from "../../api/troubadour";
 
-const getSearch = () => {
-	const [data, setData] = useState({
+export default async function getSearch(callback){
+
+	const [searchResults, setSearchResults] = useState({
 		slug: "",
 		results: {},
-	});
+	  });
+	  
+	useEffect(()=> {
 
-	useEffect(() => {
-		if (data.slug !== "") {
-			const timeoutId = setTimeout(() => {
-				const fetch = async () => {
-					try {
-						const res = await troubadour.get(`search?q=/${data.slug}`);
-						setData({ ...data, results: res.data });
-					} catch (err) {
-						console.error(err);
-					}
-				};
-				fetch();
-			}, 1000);
-			return () => clearTimeout(timeoutId);
+		if (searchResults.slug !== "") {
+			try{
+	
+				const timeoutId = setTimeout(() => {
+					const fetch = async () => {
+						try {
+		
+							 await troubadour.get(`search?q=/${searchResults.slug}`).then((res)=>{
+								callback(res.data)
+								setSearch({...search, results: res.data})
+							})
+						} catch (err) {
+							console.error(err);
+						}
+					};
+					fetch();
+				  }, 1000);
+				  return () => clearTimeout(timeoutId);
+			} catch (err) {
+				console.error(err);
+			}
 		}
-	}, [data.slug]);
-
-	return { data, setData };
-};
-
-export default getSearch;
+	}, [searchResults.slug])
+	return { searchResults, setSearchResults };
+}
