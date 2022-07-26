@@ -3,6 +3,7 @@ import getUserPreferences from "../hooks/userPreferences/getUserPreferences"
 import PreferencesListMaster from "../component/PreferencesListMaster";
 import { ScrollView, View } from "react-native";
 import { Button, Spinner } from "react-bootstrap";
+import { useIsFocused } from '@react-navigation/native';
 import "bootstrap/dist/css/bootstrap.min.css";
 import { TroubadourContext } from "../context/troubadourContext";
 //import PropTypes from 'prop-types';
@@ -28,6 +29,11 @@ function MyPreferencesScreen({ navigation }) {
 		prefs: [],
 		doLoad: false
 	});
+
+	const getUserPreferencesCallback = useCallback(() => {
+
+		getUserPreferences(userId.id, setUserPreferencesCallback);
+	})
 
 	const setUserPreferencesCallback = useCallback((newPrefdata) => {
 
@@ -60,7 +66,7 @@ function MyPreferencesScreen({ navigation }) {
 						})}
 					> Add</Button>
 					<ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-						<PreferencesListMaster preferences={userPreferences.prefs.data} userPreferencesObject={userPreferences} triggerReloadFunction={setUserPreferencesCallback} searchType={"removeOnly"} />
+						<PreferencesListMaster preferences={userPreferences.prefs.data} userPreferencesObject={userPreferences} triggerReloadFunction={getUserPreferencesCallback} searchType={"removeOnly"} />
 					</ScrollView>
 				</View>
 				:
