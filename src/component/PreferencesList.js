@@ -2,8 +2,13 @@
 // @src/components/SearchQuery.jsx
 
 import React from "react";
-import { Card } from "react-bootstrap";
-import ListGroup from "react-bootstrap/ListGroup"
+import {
+	Card,
+	Row,
+	Col,
+	Container,
+	ListGroup
+} from "react-bootstrap";
 //import ListGroupItem from "react-bootstrap/ListGroupItem";
 import PropTypes from 'prop-types';
 import { PlusCircleFill, DashCircleFill } from 'react-bootstrap-icons';
@@ -20,6 +25,12 @@ export default function PreferencesList(props) {
 	// 	props.searchType: PropTypes.string.isRequired,
 	// };
 
+	let colCount = 5
+	let mdVar = 1
+
+	//Index is needed to keep track of the current element that we are one.
+	let index = 0
+
 	const searchType = props.searchType;
 	const userPreferences = props.userPreferencesObject;
 	const preferences = props.preferences;
@@ -27,6 +38,92 @@ export default function PreferencesList(props) {
 	// eslint-disable-next-line no-unused-vars
 	const { userId, setUserId } = React.useContext(TroubadourContext);
 	//const { userPreferences, setUserPreferences } = getUserPreferences(userId.id);
+
+	const GridSystem = ({ colCount, children, searchTitle }) => {
+
+		if (children == undefined){
+			return null; 
+		}
+
+		let index = 0
+		const buildResults = (colCount, searchQuery, searchTitle) => {
+			let rowCount = Math.floor(searchQuery.length / colCount) + 1
+			let results = []
+			results.push(buildGrid(searchTitle, searchQuery, colCount, rowCount))
+			return (
+				results
+			)
+		}
+		//This is the driver function for building the grid system.
+		const buildGrid = (titleName, titleData, colCount, rowCount) => {
+			let header = (
+				<h4 key={titleName + "Header"}>{titleName}</h4>
+			)
+			let queryResults = renderRows(titleData, colCount, rowCount)
+
+			return (
+				<div key={titleData + "titleContents"}>
+					{header}
+					{queryResults}
+				</div>
+			)
+		}
+		//Returns For example, we can have a row with 2 columns inside it.
+		const renderRows = (searchQuery, colCount, rowCount) => {
+
+			let rows = []
+			for (let row = 0; row < rowCount; row++) {
+				let renderResults = renderCols(searchQuery, colCount, rowCount, index)
+
+				rows.push(
+					<Row className='Row' key={searchQuery[row].key + "renderRows"} >
+						{
+							renderResults.cols
+						}
+					</Row>
+				)
+				index = renderResults.index
+			}
+			let container = (
+				<Container key={searchQuery[0].spotify_id + "renderRowsContainer"}>
+					{rows}
+				</Container>
+			)
+			return container
+		}
+		//Returns an array of columns with the children inside.
+		const renderCols = (queryResults, colCount, rowCount, index) => {
+			let cols = []
+
+			//If you want to add more bootstrap breakpoints you can pass them as props here.
+			for (let col = 0; col < colCount; col++) {
+				if (index < queryResults.length) {
+					cols.push(
+						<Col className='Col' key={queryResults[index].key + "renderCols"}  >
+							{queryResults[index]}
+						</Col>
+					)
+					index++
+				}
+			}
+
+			return { index, cols }
+		}
+
+		return (
+			children[0].type == "p" ?
+				<Container key={searchTitle + "buildResults"} className='Container'>
+					<p key={searchTitle + "noResults"}>No albums are found.</p>
+				</Container>
+				:
+				<Container key={searchTitle + "buildResults"} className='Container'>
+					{
+						buildResults(colCount, children, searchTitle)
+					}
+				</Container>
+			
+		);
+	}
 
 	function getFieldsHelper(input) {
 
@@ -114,7 +211,9 @@ export default function PreferencesList(props) {
 		// 	<ListGroupItem key={props.id}>{props.title}</ListGroupItem>
 		// )
 		return (
+
 			<ListGroup.Item key={props.id}>
+
 				<Card>
 					{props.searchType == "addOnly"
 						? <PlusCircleFill color="green" size={22} onClick={() => {
@@ -127,9 +226,10 @@ export default function PreferencesList(props) {
 							: null
 					}
 					{props.src.length > 0 ?
-						<Card.Img variant='top' style={{ maxHeight: "6rem", maxWidth: "6rem", display: "inline-block" }} src={props.src[0].url} /> : null
+						<Card.Img variant='top' style={{ "maxHeight": "14rem", "maxWidth": "14rem", "minHeight": "8rem", "minHeight": "8rem", "alignSelf": "center", "marginTop": "5%" }} src={props.src[0].url} />
+						: <Card.Img variant='top' style={{ "maxHeight": "14rem", "maxWidth": "14rem", "minHeight": "14rem", "minHeight": "14rem" }} />
 					}
-					<Card.Body style={{ display: "inline-block" }}>
+					<Card.Body style={{ "whiteSpace": "nowrap", "overflow": "hidden", "textOverflow": "ellipsis", "maxWidth": "14rem" }}>
 						<a>{props.name}</a>
 					</Card.Body>
 				</Card>
@@ -139,44 +239,54 @@ export default function PreferencesList(props) {
 
 
 	return (
-		<ListGroup style={{paddingBottom: "200px"}} key={0}>
-			{preferences.top_result != undefined
-				? <ListGroup.Item key={1} ><h4>Top Result</h4></ListGroup.Item>
-				: null}
-			{preferences.top_result != undefined
-				? <Item key={preferences.top_result.spotify_id + "topresult"} userPrefs={userPreferences} triggerReloadFunction={triggerReloadFunction} searchType={searchType} id={preferences.top_result.spotify_id + "topresult"} name={preferences.top_result.name} spotify_uri={preferences.top_result.uri} src={preferences.top_result.images} images={preferences.top_result.images} />
-				: null}
-
-			{preferences.albums.length > 0 ?
-				<ListGroup.Item key={2}><h4>Albums</h4></ListGroup.Item>
-				: null}
-			{preferences.albums.length > 0
-				? preferences.albums.map(item => <Item key={item.spotify_id + "album"} userPrefs={userPreferences} triggerReloadFunction={triggerReloadFunction} searchType={searchType} id={item.spotify_id + "album"} name={item.name} spotify_uri={item.uri} src={item.images} images={item.images} />)
-				: [null]}
-
-			{preferences.artists.length > 0 ?
-				<ListGroup.Item key={3}><h4>Artists</h4></ListGroup.Item>
-				: null}
-			{preferences.artists.length > 0
-				? preferences.artists.map(item => <Item key={item.spotify_id + "album"} userPrefs={userPreferences} triggerReloadFunction={triggerReloadFunction} searchType={searchType} id={item.spotify_id + "album"} name={item.name} spotify_uri={item.uri} src={item.images} images={item.images} />)
-				: [null]}
-
-
-			{preferences.genres.length > 0 ?
-				<ListGroup.Item key={4}><h4>Genres</h4></ListGroup.Item>
-				: null}
-			{preferences.genres.length > 0
-				? preferences.genres.map(item => <Item key={item.spotify_id + "album"} userPrefs={userPreferences} triggerReloadFunction={triggerReloadFunction} searchType={searchType} id={item.spotify_id + "album"} name={item.name} spotify_uri={item.uri} src={item.images} images={item.images} />)
-				: [null]}
-
-
-			{preferences.tracks.length > 0 ?
-				<ListGroup.Item key={5}><h4>Tracks</h4></ListGroup.Item>
-				: null}
-			{preferences.tracks.length > 0
-				? preferences.tracks.map(item => <Item key={item.spotify_id + "album"} userPrefs={userPreferences} triggerReloadFunction={triggerReloadFunction} searchType={searchType} id={item.spotify_id + "album"} name={item.name} spotify_uri={item.uri} src={item.images} images={item.images} />)
-				: [null]}
-		</ListGroup>
+		<div style={{ paddingBottom: "200px" }} key={0}>
+			<GridSystem key={1} colCount={colCount} md={mdVar} searchTitle={'Top Result'}>
+				{preferences.top_result != undefined
+					? [preferences.top_result].map(item => 
+						<Item key={item.spotify_id + "topresult"} 
+							userPrefs={userPreferences} triggerReloadFunction={triggerReloadFunction} 
+							searchType={searchType} id={item.spotify_id + "topresult"} 
+							name={item.name} spotify_uri={item.uri} 
+							src={item.images} images={item.images} />)
+					: null}
+			</GridSystem>
+			<GridSystem key={2} colCount={colCount} md={mdVar} searchTitle={'Albums'}>
+				{preferences.albums.length > 0
+					? preferences.albums.map(item => 
+						<Item key={item.spotify_id + "album"} userPrefs={userPreferences}
+						 triggerReloadFunction={triggerReloadFunction} searchType={searchType}
+						  id={item.spotify_id + "album"} name={item.name} spotify_uri={item.uri}
+						   src={item.images} images={item.images} />)
+					: null}
+			</GridSystem>
+			<GridSystem key={3} colCount={colCount} md={mdVar} searchTitle={'Artists'}>
+				{preferences.artists.length > 0
+					? preferences.artists.map(item => 
+						<Item key={item.spotify_id + "artists"} userPrefs={userPreferences}
+						 triggerReloadFunction={triggerReloadFunction} searchType={searchType}
+						  id={item.spotify_id + "artists"} name={item.name} spotify_uri={item.uri}
+						   src={item.images} images={item.images} />)
+					: null}
+			</GridSystem>
+			<GridSystem key={4} colCount={colCount} md={mdVar} searchTitle={'Genres'}>
+				{preferences.genres.length > 0
+					? preferences.genres.map(item => 
+						<Item key={item.spotify_id + "genres"} userPrefs={userPreferences}
+						 triggerReloadFunction={triggerReloadFunction} searchType={searchType}
+						  id={item.spotify_id + "genres"} name={item.name} spotify_uri={item.uri}
+						   src={item.images} images={item.images} />)
+					: null}
+			</GridSystem>
+			<GridSystem key={5} colCount={colCount} md={mdVar} searchTitle={'Tracks'}>
+				{preferences.tracks.length > 0
+					? preferences.tracks.map(item => 
+						<Item key={item.spotify_id + "tracks"} userPrefs={userPreferences}
+						 triggerReloadFunction={triggerReloadFunction} searchType={searchType}
+						  id={item.spotify_id + "tracks"} name={item.name} spotify_uri={item.uri}
+						   src={item.images} images={item.images} />)
+					: null}
+			</GridSystem>
+		</div>
 
 	)
 }
