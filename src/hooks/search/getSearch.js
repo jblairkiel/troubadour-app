@@ -3,7 +3,7 @@
 import {useEffect, useState} from "react";
 import troubadour from "../../api/troubadour";
 
-export default async function getSearch(callback){
+const getSearch = () => {
 
 	const [searchResults, setSearchResults] = useState({
 		slug: "",
@@ -11,29 +11,22 @@ export default async function getSearch(callback){
 	  });
 	  
 	useEffect(()=> {
-
 		if (searchResults.slug !== "") {
-			try{
+			const timeoutId = setTimeout(() => {
+				const fetch = async () => {
+					try {
 	
-				const timeoutId = setTimeout(() => {
-					const fetch = async () => {
-						try {
-		
-							 await troubadour.get(`search?q=/${searchResults.slug}`).then((res)=>{
-								callback(res.data)
-								setSearch({...search, results: res.data})
-							})
-						} catch (err) {
-							console.error(err);
-						}
-					};
-					fetch();
-				  }, 1000);
-				  return () => clearTimeout(timeoutId);
-			} catch (err) {
-				console.error(err);
-			}
+						const res = await troubadour.get(`search?q=/${searchResults.slug}`);
+						setSearchResults({...searchResults, results: res.data});
+					} catch (err) {
+						console.error(err);
+					}
+				};
+				fetch();
+			}, 1000);
+			return () => clearTimeout(timeoutId);
 		}
 	}, [searchResults.slug])
 	return { searchResults, setSearchResults };
 }
+export default getSearch;

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import getUserPreferences from "../hooks/userPreferences/getUserPreferences"
-import Search from "../component/Search";
+import PreferencesListMaster from "../component/PreferencesListMaster";
 import { ScrollView, View } from "react-native";
 import { Button, Spinner } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -17,6 +17,8 @@ function MyPreferencesScreen({ navigation }) {
 	// 	navigation.push: PropTypes.fun.isRequired
 	// };
 
+	const isFocused = useIsFocused();
+
 	// eslint-disable-next-line no-unused-vars
 	const { userId, setUserId } = React.useContext(TroubadourContext);
 	// eslint-disable-next-line no-unused-vars
@@ -30,7 +32,7 @@ function MyPreferencesScreen({ navigation }) {
 	const setUserPreferencesCallback = useCallback((newPrefdata) => {
 
 		setUserPreferences({ ...userPreferences, prefs: newPrefdata })
-	} )
+	})
 
 	const loadData = async function () {
 		// eslint-disable-next-line no-unused-vars
@@ -39,15 +41,16 @@ function MyPreferencesScreen({ navigation }) {
 
 
 	useEffect(() => {
-		loadData();
-		return () => {};
-	},[]);
+		if (isFocused){
+			loadData()
+		}
+		return () => { };
+	}, [isFocused]);
 	return (
-
-		<View style={{ flex: 1, alignItems: "left", justifyContent: "left", padding: "1%" }}>
-
+		<div>
 			{Object.keys(userPreferences.prefs).length > 0 ?
-				<View>
+				<View style={{ flex: 1, alignItems: "left", justifyContent: "left", padding: "1%" }}>
+
 					<Button
 						variant="primary"
 						style={{ "marginLeft": "80%", "float": "right", "width": "14rem" }}
@@ -57,7 +60,7 @@ function MyPreferencesScreen({ navigation }) {
 						})}
 					> Add</Button>
 					<ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-						<Search searchQuery={userPreferences.prefs.data} userPreferences={userPreferences} triggerReloadFunction={setUserPreferencesCallback} searchType={"removeOnly"} />
+						<PreferencesListMaster preferences={userPreferences.prefs.data} userPreferencesObject={userPreferences} triggerReloadFunction={setUserPreferencesCallback} searchType={"removeOnly"} />
 					</ScrollView>
 				</View>
 				:
@@ -65,7 +68,8 @@ function MyPreferencesScreen({ navigation }) {
 					<span className="visually-hidden">Loading...</span>
 				</Spinner>
 			}
-		</View>
+
+		</div>
 	);
 
 }

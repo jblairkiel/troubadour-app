@@ -17,8 +17,8 @@ function SearchScreen({}) {
 	// 	navigation: PropTypes.component.isRequired
 	// };
 
+	const {searchResults, setSearchResults} = getSearch();
 	const { userId, setUserId } = React.useContext(TroubadourContext);
-
 	const [userPreferences, setUserPreferences] = useState({
 		prefs: [],
 		doLoad: false
@@ -33,34 +33,40 @@ function SearchScreen({}) {
 	// eslint-disable-next-line no-unused-vars
 	let token = window.localStorage.getItem("token")
 
-	const setUserPreferencesCallback = useCallback((newPrefdata) => {
+	
 
-		setUserPreferences({ ...userPreferences, prefs: newPrefdata })
+
+	const setUserPreferencesCallback = useCallback((newPrefs) => {
+		setUserPreferences({...userPreferences, prefs: newPrefs.data});
 	} )
 
+	const loadDataCallback = useCallback(()=> {
+		getUserPreferences(userId.id, setUserPreferencesCallback);
+	})
 
 	// eslint-disable-next-line no-unused-vars
-	const {searchResults, setSearchResults} = getSearch();
 	const loadData = async function () {
 		// eslint-disable-next-line no-unused-vars
 		await getUserPreferences(userId.id, setUserPreferencesCallback);
 	}
 
 
-	useEffect(() => {
-		loadData();
-		return () => {};
-	},[]);
+
+
+	// useEffect(() => {
+	// 	loadData();
+	// 	return () => {};
+	// },[]);
 	//const loadSearchResult = async function(){
 
 	//	await getSearch(userPreferences.text, setUserPreferencesCallback);
 	//}
 
 
-	//useEffect(() => {
-	//	loadSearchResult();
-	//	return () => {};
-	//},[userPreferences.text]);
+	useEffect(() => {
+		loadData();
+		return () => {};
+	},[]);
 	return (
 		<View style={{flex:1,  alignItems: "left", justifyContent: "left", padding: "1%"}}>
 
@@ -68,16 +74,16 @@ function SearchScreen({}) {
 				<Form.Control
 					type="text"
 					placeholder="Search Spotify"
-					value={userPreferences.text}
-					onChange={(e) => setUserPreferences({ ...userPreferences, slug: e.target.value })}
+					//value={searchResults.slug}
+					onChange={(e) => setSearchResults({ ...searchResults, slug: e.target.value })}
 				/>
 			</Form>
 			
-			{Object.keys(searchResults.prefs).length > 0 ?
+			{Object.keys(searchResults.results).length > 0 ?
 				<ScrollView contentContainerStyle={{ flexGrow: 1 }}> 
-					<Search searchQuery={userPreferences.refs.data} userPreferences={userPreferences} triggerReloadFunction={setUserPreferencesCallback}  searchType={"addOnly"} /> 
+					<Search searchQuery={searchResults.results.data} userPreferences={userPreferences} triggerReloadFunction={loadDataCallback}  searchType={"addOnly"} /> 
 				</ScrollView>
-				: null } 
+				: null }
 		</View>
 	);
 }

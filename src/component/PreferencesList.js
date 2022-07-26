@@ -12,7 +12,7 @@ import troubadour from "../api/troubadour";
 //import addUserPreference from "../hooks/userPreferences/addUserPreference";
 import { TroubadourContext } from "../context/troubadourContext";
 
-export default function SearchQuery(props) {
+export default function PreferencesList(props) {
 
 	//Props validation
 	// SearchQuery.propTypes = {
@@ -21,8 +21,8 @@ export default function SearchQuery(props) {
 	// };
 
 	const searchType = props.searchType;
-	const userPreferences = props.userPreferences;
-	const searchQuery = props.searchQuery;
+	const userPreferences = props.userPreferencesObject;
+	const preferences = props.preferences;
 	const triggerReloadFunction = props.triggerReloadFunction;
 	// eslint-disable-next-line no-unused-vars
 	const { userId, setUserId } = React.useContext(TroubadourContext);
@@ -42,10 +42,10 @@ export default function SearchQuery(props) {
 
 	function getPrefsAsFlatArray(input) {
 		var output = [];
-		output = output.concat(getFieldsHelper(input.artists, 'artists'))
-		output = output.concat(getFieldsHelper(input.albums, 'albums'))
-		output = output.concat(getFieldsHelper(input.genres, 'genres'))
-		output = output.concat(getFieldsHelper(input.tracks, 'tracks'))
+		output = output.concat(getFieldsHelper(input.data.artists, 'artists'))
+		output = output.concat(getFieldsHelper(input.data.albums, 'albums'))
+		output = output.concat(getFieldsHelper(input.data.genres, 'genres'))
+		output = output.concat(getFieldsHelper(input.data.tracks, 'tracks'))
 		return output;
 	}
 	async function handleAddClick(props) {
@@ -140,41 +140,41 @@ export default function SearchQuery(props) {
 
 	return (
 		<ListGroup key={0}>
-			{searchQuery.top_result != undefined
+			{preferences.top_result != undefined
 				? <ListGroup.Item key={1} ><h4>Top Result</h4></ListGroup.Item>
 				: null}
-			{searchQuery.top_result != undefined
-				? <Item key={searchQuery.top_result.spotify_id + "topresult"} userPrefs={userPreferences} triggerReloadFunction={triggerReloadFunction} searchType={searchType} id={searchQuery.top_result.spotify_id + "topresult"} name={searchQuery.top_result.name} spotify_uri={searchQuery.top_result.uri} src={searchQuery.top_result.images} images={searchQuery.top_result.images} />
+			{preferences.top_result != undefined
+				? <Item key={preferences.top_result.spotify_id + "topresult"} userPrefs={userPreferences} triggerReloadFunction={triggerReloadFunction} searchType={searchType} id={preferences.top_result.spotify_id + "topresult"} name={preferences.top_result.name} spotify_uri={preferences.top_result.uri} src={preferences.top_result.images} images={preferences.top_result.images} />
 				: null}
 
-			{searchQuery.albums.length > 0 ?
+			{preferences.albums.length > 0 ?
 				<ListGroup.Item key={2}><h4>Albums</h4></ListGroup.Item>
 				: null}
-			{searchQuery.albums.length > 0
-				? searchQuery.albums.map(item => <Item key={item.spotify_id + "album"} userPrefs={userPreferences} triggerReloadFunction={triggerReloadFunction} searchType={searchType} id={item.spotify_id + "album"} name={item.name} spotify_uri={item.uri} src={item.images} images={item.images} />)
+			{preferences.albums.length > 0
+				? preferences.albums.map(item => <Item key={item.spotify_id + "album"} userPrefs={userPreferences} triggerReloadFunction={triggerReloadFunction} searchType={searchType} id={item.spotify_id + "album"} name={item.name} spotify_uri={item.uri} src={item.images} images={item.images} />)
 				: [null]}
 
-			{searchQuery.artists.length > 0 ?
+			{preferences.artists.length > 0 ?
 				<ListGroup.Item key={3}><h4>Artists</h4></ListGroup.Item>
 				: null}
-			{searchQuery.artists.length > 0
-				? searchQuery.artists.map(item => <Item key={item.spotify_id + "album"} userPrefs={userPreferences} triggerReloadFunction={triggerReloadFunction} searchType={searchType} id={item.spotify_id + "album"} name={item.name} spotify_uri={item.uri} src={item.images} images={item.images} />)
+			{preferences.artists.length > 0
+				? preferences.artists.map(item => <Item key={item.spotify_id + "album"} userPrefs={userPreferences} triggerReloadFunction={triggerReloadFunction} searchType={searchType} id={item.spotify_id + "album"} name={item.name} spotify_uri={item.uri} src={item.images} images={item.images} />)
 				: [null]}
 
 
-			{searchQuery.genres.length > 0 ?
+			{preferences.genres.length > 0 ?
 				<ListGroup.Item key={4}><h4>Genres</h4></ListGroup.Item>
 				: null}
-			{searchQuery.genres.length > 0
-				? searchQuery.genres.map(item => <Item key={item.spotify_id + "album"} userPrefs={userPreferences} triggerReloadFunction={triggerReloadFunction} searchType={searchType} id={item.spotify_id + "album"} name={item.name} spotify_uri={item.uri} src={item.images} images={item.images} />)
+			{preferences.genres.length > 0
+				? preferences.genres.map(item => <Item key={item.spotify_id + "album"} userPrefs={userPreferences} triggerReloadFunction={triggerReloadFunction} searchType={searchType} id={item.spotify_id + "album"} name={item.name} spotify_uri={item.uri} src={item.images} images={item.images} />)
 				: [null]}
 
 
-			{searchQuery.tracks.length > 0 ?
+			{preferences.tracks.length > 0 ?
 				<ListGroup.Item key={5}><h4>Tracks</h4></ListGroup.Item>
 				: null}
-			{searchQuery.tracks.length > 0
-				? searchQuery.tracks.map(item => <Item key={item.spotify_id + "album"} userPrefs={userPreferences} triggerReloadFunction={triggerReloadFunction} searchType={searchType} id={item.spotify_id + "album"} name={item.name} spotify_uri={item.uri} src={item.images} images={item.images} />)
+			{preferences.tracks.length > 0
+				? preferences.tracks.map(item => <Item key={item.spotify_id + "album"} userPrefs={userPreferences} triggerReloadFunction={triggerReloadFunction} searchType={searchType} id={item.spotify_id + "album"} name={item.name} spotify_uri={item.uri} src={item.images} images={item.images} />)
 				: [null]}
 		</ListGroup>
 
