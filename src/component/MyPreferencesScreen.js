@@ -4,6 +4,7 @@ import PreferencesListMaster from "../component/PreferencesListMaster";
 import { ScrollView, View } from "react-native";
 import { Button, Spinner } from "react-bootstrap";
 import { useIsFocused } from '@react-navigation/native';
+import { Dimensions } from "react-native";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { TroubadourContext } from "../context/troubadourContext";
 //import PropTypes from 'prop-types';
@@ -53,7 +54,7 @@ function MyPreferencesScreen({ navigation }) {
 		return () => { };
 	}, [isFocused]);
 	return (
-		<div>
+		<div style={{flex: 1}}>
 			{Object.keys(userPreferences.prefs).length > 0 ?
 				<View style={{ flex: 1, alignItems: "left", justifyContent: "left", padding: "1%" }}>
 
@@ -65,14 +66,11 @@ function MyPreferencesScreen({ navigation }) {
 							userId: userId
 						})}
 					> Add</Button>
-					<ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+					<ScrollView contentContainerStyle={{ flexGrow: 1,  height: Dimensions.get('window').height}}>
 						<PreferencesListMaster preferences={userPreferences.prefs.data} userPreferencesObject={userPreferences} triggerReloadFunction={getUserPreferencesCallback} searchType={"removeOnly"} />
 					</ScrollView>
 				</View>
-				:
-				<Spinner animation="border" role="status">
-					<span className="visually-hidden">Loading...</span>
-				</Spinner>
+				:null
 			}
 
 		</div>

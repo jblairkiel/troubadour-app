@@ -139,7 +139,7 @@ export default function PreferencesList(props) {
 
 
 	return (
-		<ListGroup key={0}>
+		<ListGroup style={{paddingBottom: "200px"}} key={0}>
 			{preferences.top_result != undefined
 				? <ListGroup.Item key={1} ><h4>Top Result</h4></ListGroup.Item>
 				: null}

@@ -18,10 +18,10 @@ function Root() {
 	const { userId, setUserId } = React.useContext(TroubadourContext);
 
 	return (
-		<Tab.Navigator>
+		<Tab.Navigator >
 			<Tab.Screen name="Home" component={HomeScreen} />
 			{userId.id != undefined 
-				?  (<Tab.Screen name="My Preferences" component={MyPreferencesScreen} />)
+				?  (<Tab.Screen name="My Preferences" component={MyPreferencesScreen}  />)
 				: null
 			}
 		</Tab.Navigator>

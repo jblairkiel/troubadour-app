@@ -18,6 +18,7 @@ function SearchScreen({}) {
 	// };
 
 	const {searchResults, setSearchResults} = getSearch();
+	// eslint-disable-next-line no-unused-vars
 	const { userId, setUserId } = React.useContext(TroubadourContext);
 	const [userPreferences, setUserPreferences] = useState({
 		prefs: [],
