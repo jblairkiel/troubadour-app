@@ -4,7 +4,8 @@ export const TroubadourContext = React.createContext({
 	setUserId: (at) => { },
 	userId: {
 		id: "",
-		display_name: ""
+		display_name: "", 
+		token: ""
 	},
 });
 

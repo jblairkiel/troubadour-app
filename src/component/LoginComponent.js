@@ -68,7 +68,7 @@ function LoginComponent() {
 	}
 
 	return (
-		<View style={{flex:1,  alignItems: "left", justifyContent: "left", padding: "1%"}}>
+		<View style={{maxHeight: '10rem', flex:1,  alignItems: "left", justifyContent: "left", padding: "1%"}}>
 
 			{!token&& userId.display_name != "" ?
 				<Button 
