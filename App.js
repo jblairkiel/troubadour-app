@@ -10,6 +10,7 @@ import MyPreferencesScreen from "./src/component/MyPreferencesScreen.js"
 import PreferencesSearchScreen from "./src/component/PreferencesSearchScreen.js"
 import { TroubadourContextProvider, TroubadourContext } from "./src/context/troubadourContext";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { House, HouseFill, BookmarkHeart, BookmarkHeartFill } from "react-bootstrap-icons";
 
 function Root() {
 
@@ -18,7 +19,31 @@ function Root() {
 	const { userId, setUserId } = React.useContext(TroubadourContext);
 
 	return (
-		<Tab.Navigator >
+		<Tab.Navigator 
+			tabBarOptions={{ showLabel: false }}
+			screenOptions={({ route }) => ({
+				// eslint-disable-next-line no-unused-vars
+				tabBarIcon: ({ focused, color, size }) => {
+					if (route.name === 'Home') {
+						if (focused){
+							return <HouseFill color="limegreen" size={24} />
+						} else {
+							return <House color="limegreen" size={24}  />
+						}
+					} else if (route.name === 'My Preferences') {
+						if (focused){
+							return <BookmarkHeartFill color="limegreen" size={24}  />
+						} else {
+							return <BookmarkHeart color="limegreen" size={24}  />
+						}
+					}
+
+					// You can return any component that you like here!
+					return ;
+				},
+				tabBarActiveTintColor: 'limegreen',
+				tabBarInactiveTintColor: 'limegreen',
+			})} >
 			<Tab.Screen name="Home" component={HomeScreen} />
 			{userId.id != undefined 
 				?  (<Tab.Screen name="My Preferences" component={MyPreferencesScreen}  />)
