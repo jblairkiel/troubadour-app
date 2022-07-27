@@ -56,6 +56,7 @@ function MyPreferencesScreen({ navigation }) {
 	return (
 		<div style={{flex: 1}}>
 			{Object.keys(userPreferences.prefs).length > 0 ?
+
 				<View style={{ flex: 1, alignItems: "left", justifyContent: "left", padding: "1%" }}>
 
 					<Button
@@ -70,7 +71,12 @@ function MyPreferencesScreen({ navigation }) {
 						<PreferencesListMaster preferences={userPreferences.prefs.data} userPreferencesObject={userPreferences} triggerReloadFunction={getUserPreferencesCallback} searchType={"removeOnly"} />
 					</ScrollView>
 				</View>
-				:null
+				: 
+				<div style={{width: "100%", height: "100%"}}>
+					<Spinner style={{marginTop: "200px", marginLeft: "50%"}} animation="border" role="status">
+						<span className="visually-hidden">Loading...</span>
+					</Spinner>
+				</div>
 			}
 
 		</div>

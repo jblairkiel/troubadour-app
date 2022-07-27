@@ -29,6 +29,7 @@ export default function PreferencesList(props) {
 	let mdVar = 1
 
 	//Index is needed to keep track of the current element that we are one.
+	// eslint-disable-next-line no-unused-vars
 	let index = 0
 
 	const searchType = props.searchType;
@@ -99,7 +100,7 @@ export default function PreferencesList(props) {
 			for (let col = 0; col < colCount; col++) {
 				if (index < queryResults.length) {
 					cols.push(
-						<Col className='Col' key={queryResults[index].key + "renderCols"}  >
+						<Col className='Col' style={{textAlign: "center"}} key={queryResults[index].key + "renderCols"}  >
 							{queryResults[index]}
 						</Col>
 					)
@@ -191,11 +192,6 @@ export default function PreferencesList(props) {
 		};
 		fetch();
 	}
-	//let colCount = 5
-	//let mdVar = 1
-
-	//Index is needed to keep track of the current element that we are one.
-	//let index = 0
 
 	const Item = props => {
 
@@ -212,24 +208,24 @@ export default function PreferencesList(props) {
 		// )
 		return (
 
-			<ListGroup.Item key={props.id}>
+			<ListGroup.Item style={{border: "none", background: "none", display: "inline-block"}} key={props.id}>
 
-				<Card>
+				<Card style={{maxWidth: "16rem", minWidth: "12rem"}}>
 					{props.searchType == "addOnly"
-						? <PlusCircleFill color="green" size={22} onClick={() => {
+						? <PlusCircleFill style={{margin: "1%"}} color="green" size={22} onClick={() => {
 							handleAddClick(props);
 						}} />
 						: props.searchType == "removeOnly"
-							? <DashCircleFill color="red" size={22} onClick={() => {
+							? <DashCircleFill style={{margin: "1%"}} color="red" size={22} onClick={() => {
 								handleRemoveClick(props);
 							}} />
 							: null
 					}
 					{props.src.length > 0 ?
-						<Card.Img variant='top' style={{ "maxHeight": "14rem", "maxWidth": "14rem", "minHeight": "8rem", "minHeight": "8rem", "alignSelf": "center", "marginTop": "5%" }} src={props.src[0].url} />
-						: <Card.Img variant='top' style={{ "maxHeight": "14rem", "maxWidth": "14rem", "minHeight": "14rem", "minHeight": "14rem" }} />
+						<Card.Img variant='top' style={{ "maxHeight": "11rem", "maxWidth": "11rem", "minHeight": "8rem", "minWidth": "8rem", "alignSelf": "center", "marginTop": "5%" }} src={props.src[0].url} />
+						: <Card.Img variant='top' style={{ "maxHeight": "11rem", "maxWidth": "11rem",  "minHeight": "11rem" , "minWidth": "11rem","alignSelf": "center", "marginTop": "5%" }} />
 					}
-					<Card.Body style={{ "whiteSpace": "nowrap", "overflow": "hidden", "textOverflow": "ellipsis", "maxWidth": "14rem" }}>
+					<Card.Body style={{ "whiteSpace": "nowrap", "overflow": "hidden", "textOverflow": "ellipsis", "maxWidth": "11rem" }}>
 						<a>{props.name}</a>
 					</Card.Body>
 				</Card>
