@@ -22,7 +22,7 @@ const createPlaylist = ( callback, argUserId, argToken, lat, long ) => {
 									"X-API-KEY": argToken,
 								}
 							});
-							callback(res.data);
+						callback(res.data);
 					} catch (err) {
 						console.error(err);
 					}

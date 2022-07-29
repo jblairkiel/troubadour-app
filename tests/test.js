@@ -1,11 +1,21 @@
 import React from 'react';
-import renderer from 'react-test-renderer';
+import { act, renderer } from 'react-test-renderer';
+import App from '../App'
 
-import App from '../App';
+jest.mock("expo", () => ({
+	AppLoading: "AppLoading",
+	Linking: {
+		makeUrl: () => "/"
+	}
+}));
+//jest.mock("../navigation/BottomTabNavigator", () => "BottomTabNavigator");
 
-describe('<NavigationContainer />', () => {
-  it('has 1 child', () => {
-    const tree = renderer.create(<Stack.Navigator />).toJSON();
-    expect(tree.children.length).toBe(1);
-  });
+describe('<App />', () => {
+	it('has 1 child', () => {
+
+		act(() => {
+			tree = renderer.create(<App />).toJSON();
+		  });
+		expect(tree.children.length).toBe(1);
+	});
 });
