@@ -3,7 +3,6 @@
 
 import React, {useCallback, useEffect} from "react";
 import { View} from "react-native";
-import "bootstrap/dist/css/bootstrap.min.css";
 import createPlaylist from "../hooks/playlist/createPlaylist";
 import logo from '../../assets/troubadour_logo_text_dark_stroke_highlight.png';
 

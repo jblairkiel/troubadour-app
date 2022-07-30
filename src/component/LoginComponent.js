@@ -2,7 +2,6 @@ import React, {useEffect, useState} from "react";
 import { View} from "react-native";
 import {Button} from "react-bootstrap";
 import axios from "axios";
-import "bootstrap/dist/css/bootstrap.min.css";
 import { TroubadourContext } from "../context/troubadourContext";
 
 
@@ -24,13 +23,17 @@ function LoginComponent() {
 	const [token, setToken] = useState("")
 
 	const getUserData = async (e) => {
-		const {data} = await axios.get("https://api.spotify.com/v1/me", {
+		await axios.get("https://api.spotify.com/v1/me", {
 			headers: {
 				Authorization: `Bearer ${e}`
 			}
+		}).then((data)=> {
+			setUserId(data)
+		}).catch((err) => {
+			//setUserId(...userId,id: "")
+			console.log("Server Might be down: " + err)
 		})
 	
-		setUserId(data)
 	}
 	
 	  
@@ -59,12 +62,22 @@ function LoginComponent() {
 	}
 
 	const renderUserData = () => {
-		return (
-			<div>
-				{ userId.id != "" ? <h3>{userId.display_name}</h3> : <div>No Data</div>}
-				
-			</div>
-		)
+		if(userId == undefined){
+			return (
+				<div>No Data</div>
+			)
+		} else if (userId.id == ""){
+			return (
+				<div>No Data</div>
+			)
+		} else{
+			return (
+				<div>
+					<h3>{userId.display_name}</h3> 
+				</div>
+			)
+		}
+		
 	}
 
 	return (

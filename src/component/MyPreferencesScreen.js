@@ -5,7 +5,6 @@ import { ScrollView, View } from "react-native";
 import { Button, Spinner } from "react-bootstrap";
 import { useIsFocused } from '@react-navigation/native';
 import { Dimensions } from "react-native";
-import "bootstrap/dist/css/bootstrap.min.css";
 import { TroubadourContext } from "../context/troubadourContext";
 //import PropTypes from 'prop-types';
 //import { StackActions, NavigationActions, withNavigation } from '@react-navigation/native';

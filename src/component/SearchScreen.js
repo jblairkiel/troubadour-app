@@ -5,7 +5,6 @@ import getSearch from "../hooks/search/getSearch"
 import Search from "../component/Search";
 import {ScrollView, View} from "react-native";
 import {Form} from "react-bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
 
 
 function SearchScreen({}) {
