@@ -17,7 +17,7 @@ import troubadour from "../api/troubadour";
 //import addUserPreference from "../hooks/userPreferences/addUserPreference";
 import { TroubadourContext } from "../context/troubadourContext";
 
-export default function SearchQuery(props) {
+export default function PreferencesList(props) {
 
 	//Props validation
 	// SearchQuery.propTypes = {
@@ -33,8 +33,8 @@ export default function SearchQuery(props) {
 	let index = 0
 
 	const searchType = props.searchType;
-	const userPreferences = props.userPreferences;
-	const searchQuery = props.searchQuery;
+	const userPreferences = props.userPreferencesObject;
+	const preferences = props.preferences;
 	const triggerReloadFunction = props.triggerReloadFunction;
 	// eslint-disable-next-line no-unused-vars
 	const { userId, setUserId } = React.useContext(TroubadourContext);
@@ -42,8 +42,8 @@ export default function SearchQuery(props) {
 
 	const GridSystem = ({ colCount, children, searchTitle }) => {
 
-		if (children == undefined) {
-			return null;
+		if (children == undefined){
+			return null; 
 		}
 
 		let index = 0
@@ -122,7 +122,7 @@ export default function SearchQuery(props) {
 						buildResults(colCount, children, searchTitle)
 					}
 				</Container>
-
+			
 		);
 	}
 
@@ -140,10 +140,10 @@ export default function SearchQuery(props) {
 
 	function getPrefsAsFlatArray(input) {
 		var output = [];
-		output = output.concat(getFieldsHelper(input.artists, 'artists'))
-		output = output.concat(getFieldsHelper(input.albums, 'albums'))
-		output = output.concat(getFieldsHelper(input.genres, 'genres'))
-		output = output.concat(getFieldsHelper(input.tracks, 'tracks'))
+		output = output.concat(getFieldsHelper(input.data.artists, 'artists'))
+		output = output.concat(getFieldsHelper(input.data.albums, 'albums'))
+		output = output.concat(getFieldsHelper(input.data.genres, 'genres'))
+		output = output.concat(getFieldsHelper(input.data.tracks, 'tracks'))
 		return output;
 	}
 	async function handleAddClick(props) {
@@ -207,21 +207,23 @@ export default function SearchQuery(props) {
 		// 	<ListGroupItem key={props.id}>{props.title}</ListGroupItem>
 		// )
 		return (
-			<ListGroup.Item style={{ border: "none", background: "none", display: "inline-block" }} key={props.id}>
-				<Card  style={{maxWidth: "16rem", minWidth: "12rem"}}>
+
+			<ListGroup.Item style={{border: "none", background: "none", display: "inline-block"}} key={props.id}>
+
+				<Card style={{maxWidth: "16rem", minWidth: "12rem"}}>
 					{props.searchType == "addOnly"
-						? <PlusCircleFill style={{ margin: "1%" }} color="green" size={22} onClick={() => {
+						? <PlusCircleFill style={{margin: "1%"}} color="green" size={22} onClick={() => {
 							handleAddClick(props);
 						}} />
 						: props.searchType == "removeOnly"
-							? <DashCircleFill style={{ margin: "1%" }} color="red" size={22} onClick={() => {
+							? <DashCircleFill style={{margin: "1%"}} color="red" size={22} onClick={() => {
 								handleRemoveClick(props);
 							}} />
 							: null
 					}
 					{props.src.length > 0 ?
 						<Card.Img variant='top' style={{ "maxHeight": "11rem", "maxWidth": "11rem", "minHeight": "8rem", "minWidth": "8rem", "alignSelf": "center", "marginTop": "5%" }} src={props.src[0].url} />
-						: <Card.Img variant='top' style={{ "maxHeight": "11rem", "maxWidth": "11rem", "minHeight": "11rem", "minWidth": "11rem", "alignSelf": "center", "marginTop": "5%"  }} />
+						: <Card.Img variant='top' style={{ "maxHeight": "11rem", "maxWidth": "11rem",  "minHeight": "11rem" , "minWidth": "11rem","alignSelf": "center", "marginTop": "5%" }} />
 					}
 					<Card.Body style={{ "whiteSpace": "nowrap", "overflow": "hidden", "textOverflow": "ellipsis", "maxWidth": "11rem" }}>
 						<a>{props.name}</a>
@@ -234,51 +236,50 @@ export default function SearchQuery(props) {
 
 	return (
 		<div style={{ paddingBottom: "200px" }} key={0}>
-
 			<GridSystem key={1} colCount={colCount} md={mdVar} searchTitle={'Top Result'}>
-				{searchQuery.top_result != undefined
-					? [searchQuery.top_result].map(item =>
-						<Item key={item.spotify_id + "topresult"}
-							userPrefs={userPreferences} triggerReloadFunction={triggerReloadFunction}
-							searchType={searchType} id={item.spotify_id + "topresult"}
-							name={item.name} spotify_uri={item.uri}
+				{preferences.top_result != undefined
+					? [preferences.top_result].map(item => 
+						<Item key={item.spotify_id + "topresult"} 
+							userPrefs={userPreferences} triggerReloadFunction={triggerReloadFunction} 
+							searchType={searchType} id={item.spotify_id + "topresult"} 
+							name={item.name} spotify_uri={item.uri} 
 							src={item.images} images={item.images} />)
 					: null}
 			</GridSystem>
 			<GridSystem key={2} colCount={colCount} md={mdVar} searchTitle={'Albums'}>
-				{searchQuery.albums.length > 0
-					? searchQuery.albums.map(item =>
+				{preferences.albums.length > 0
+					? preferences.albums.map(item => 
 						<Item key={item.spotify_id + "album"} userPrefs={userPreferences}
-							triggerReloadFunction={triggerReloadFunction} searchType={searchType}
-							id={item.spotify_id + "album"} name={item.name} spotify_uri={item.uri}
-							src={item.images} images={item.images} />)
+						 triggerReloadFunction={triggerReloadFunction} searchType={searchType}
+						  id={item.spotify_id + "album"} name={item.name} spotify_uri={item.uri}
+						   src={item.images} images={item.images} />)
 					: null}
 			</GridSystem>
 			<GridSystem key={3} colCount={colCount} md={mdVar} searchTitle={'Artists'}>
-				{searchQuery.artists.length > 0
-					? searchQuery.artists.map(item =>
+				{preferences.artists.length > 0
+					? preferences.artists.map(item => 
 						<Item key={item.spotify_id + "artists"} userPrefs={userPreferences}
-							triggerReloadFunction={triggerReloadFunction} searchType={searchType}
-							id={item.spotify_id + "artists"} name={item.name} spotify_uri={item.uri}
-							src={item.images} images={item.images} />)
+						 triggerReloadFunction={triggerReloadFunction} searchType={searchType}
+						  id={item.spotify_id + "artists"} name={item.name} spotify_uri={item.uri}
+						   src={item.images} images={item.images} />)
 					: null}
 			</GridSystem>
 			<GridSystem key={4} colCount={colCount} md={mdVar} searchTitle={'Genres'}>
-				{searchQuery.genres.length > 0
-					? searchQuery.genres.map(item =>
+				{preferences.genres.length > 0
+					? preferences.genres.map(item => 
 						<Item key={item.spotify_id + "genres"} userPrefs={userPreferences}
-							triggerReloadFunction={triggerReloadFunction} searchType={searchType}
-							id={item.spotify_id + "genres"} name={item.name} spotify_uri={item.uri}
-							src={item.images} images={item.images} />)
+						 triggerReloadFunction={triggerReloadFunction} searchType={searchType}
+						  id={item.spotify_id + "genres"} name={item.name} spotify_uri={item.uri}
+						   src={item.images} images={item.images} />)
 					: null}
 			</GridSystem>
 			<GridSystem key={5} colCount={colCount} md={mdVar} searchTitle={'Tracks'}>
-				{searchQuery.tracks.length > 0
-					? searchQuery.tracks.map(item =>
+				{preferences.tracks.length > 0
+					? preferences.tracks.map(item => 
 						<Item key={item.spotify_id + "tracks"} userPrefs={userPreferences}
-							triggerReloadFunction={triggerReloadFunction} searchType={searchType}
-							id={item.spotify_id + "tracks"} name={item.name} spotify_uri={item.uri}
-							src={item.images} images={item.images} />)
+						 triggerReloadFunction={triggerReloadFunction} searchType={searchType}
+						  id={item.spotify_id + "tracks"} name={item.name} spotify_uri={item.uri}
+						   src={item.images} images={item.images} />)
 					: null}
 			</GridSystem>
 		</div>

@@ -4,11 +4,11 @@
 
 import React from "react";
 import {View} from "react-native";
-import SearchQuery from "./SearchQuery";
+import PreferencesList from "./PreferencesList";
 // eslint-disable-next-line no-unused-vars
 import PropTypes from 'prop-types';
 
-export default function Search(props) {
+export default function PreferencesListMaster(props) {
 
 	//Props validation
 	// Search.propTypes = {
@@ -21,7 +21,7 @@ export default function Search(props) {
 			{
 				props != undefined 
 					? 
-					<SearchQuery searchQuery={props.searchQuery} userPreferences={props.userPreferences} triggerReloadFunction={props.triggerReloadFunction} searchType={props.searchType}></SearchQuery>
+					<PreferencesList preferences={props.preferences} userPreferencesObject={props.userPreferencesObject} triggerReloadFunction={props.triggerReloadFunction} searchType={props.searchType}></PreferencesList>
 					: null
 			}
 		</View>
