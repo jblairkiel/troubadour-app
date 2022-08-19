@@ -5,7 +5,7 @@ ssh root@troubadour.jblairkiel.com "kill -9 \$(ps -ef | grep 'npm exec serv' | h
 ssh root@troubadour.jblairkiel.com 'rm -rf troubadour-app'
 
 #Git Clone, and start Build
-ssh root@troubadour.jblairkiel.com 'git clone https://github.com/jblairkiel/troubadour-app.git;cd troubadour-app/my-app;npm install;expo build:web'
+ssh root@troubadour.jblairkiel.com 'git clone https://github.com/jblairkiel/troubadour-app.git;cd troubadour-app;npm install;expo build:web'
 
 
 #Start Server
