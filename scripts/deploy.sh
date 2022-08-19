@@ -5,8 +5,8 @@ ssh root@troubadour.jblairkiel.com "kill -9 \$(ps -ef | grep 'npm exec serv' | h
 ssh root@troubadour.jblairkiel.com 'rm -rf troubadour-app'
 
 #Git Clone, and start Build
-ssh root@troubadour.jblairkiel.com 'git clone https://github.com/jblairkiel/troubadour-app.git;cd troubadour-app;npm install;expo build:web'
+ssh root@troubadour.jblairkiel.com 'git clone https://github.com/jblairkiel/troubadour-app.git;cd troubadour-app/my-app;npm install;expo build:web'
 
 
 #Start Server
-ssh root@troubadour.jblairkiel.com 'cd troubadour-app;npx serve web-build --ssl-cert /etc/letsencrypt/live/troubadour.jblairkiel.com/fullchain.pem --ssl-key /etc/letsencrypt/live/troubadour.jblairkiel.com/privkey.pem -l 444 &'
+ssh root@troubadour.jblairkiel.com 'cd troubadour-app;npx serve web-build -l 3001 &'
