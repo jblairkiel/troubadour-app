@@ -17,7 +17,14 @@ function LoginComponent() {
 	//const { userId, setUserId } = React.useContext(TroubadourContext);
 
 	const CLIENT_ID = "a9fc8ed15eeb4790b184ab648dd4ebf5"
-	const REDIRECT_URI = "http://localhost:19006"
+	if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+	
+		REDIRECT_URI = "http://localhost:19006"
+	} else {
+	
+		REDIRECT_URI = "http://troubadour.jblairkiel.com"
+	}
+
 	const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize"
 	const RESPONSE_TYPE = "token"
 
